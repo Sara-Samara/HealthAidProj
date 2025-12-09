@@ -1,0 +1,21 @@
+﻿// Services/Interfaces/IRatingService.cs
+using HealthAidAPI.DTOs.Rating;
+using HealthAidAPI.Models;
+
+namespace HealthAidAPI.Services.Interfaces
+{
+    public interface IRatingService
+    {
+        Task<PagedResult<RatingDto>> GetAllRatingsAsync(RatingFilterDto filter);
+        Task<RatingDto?> GetRatingByIdAsync(int id);
+        Task<RatingDto> CreateRatingAsync(CreateRatingDto createRatingDto);
+        Task<RatingDto?> UpdateRatingAsync(int id, UpdateRatingDto updateRatingDto);
+        Task<bool> DeleteRatingAsync(int id);
+        Task<bool> DeleteRatingsByUserAsync(int userId);
+        Task<IEnumerable<RatingDto>> GetRatingsByTargetAsync(string targetType, int targetId);
+        Task<AverageRatingDto> GetAverageRatingAsync(string targetType, int targetId);
+        Task<RatingStatsDto> GetRatingStatsAsync();
+        Task<bool> HasUserRatedAsync(int userId, string targetType, int targetId);
+        Task<IEnumerable<RatingDto>> GetRecentRatingsAsync(int count = 10);
+    }
+}

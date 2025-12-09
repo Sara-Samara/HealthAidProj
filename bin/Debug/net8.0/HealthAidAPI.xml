@@ -1,0 +1,1167 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HealthAidAPI</name>
+    </assembly>
+    <members>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetAppointments(HealthAidAPI.DTOs.AppointmentFilterDto)">
+            <summary>
+            Get all appointments with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetAppointment(System.Int32)">
+            <summary>
+            Get appointment by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.CreateAppointment(HealthAidAPI.DTOs.CreateAppointmentDto)">
+            <summary>
+            Create a new appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.UpdateAppointment(System.Int32,HealthAidAPI.DTOs.UpdateAppointmentDto)">
+            <summary>
+            Update an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.RescheduleAppointment(System.Int32,HealthAidAPI.DTOs.RescheduleAppointmentDto)">
+            <summary>
+            Reschedule an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.CancelAppointment(System.Int32,System.String)">
+            <summary>
+            Cancel an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.ConfirmAppointment(System.Int32)">
+            <summary>
+            Confirm an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.CompleteAppointment(System.Int32)">
+            <summary>
+            Complete an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.DeleteAppointment(System.Int32)">
+            <summary>
+            Delete an appointment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetAppointmentStats">
+            <summary>
+            Get appointment statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetUpcomingAppointments(System.Int32)">
+            <summary>
+            Get upcoming appointments
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetDoctorAppointments(System.Int32,System.Nullable{System.DateTime})">
+            <summary>
+            Get doctor's appointments
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.GetPatientAppointments(System.Int32)">
+            <summary>
+            Get patient's appointments
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.AppointmentsController.CheckTimeSlotAvailability(System.Int32,System.DateTime)">
+            <summary>
+            Check if time slot is available
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultations(HealthAidAPI.DTOs.ConsultationFilterDto)">
+            <summary>
+            Get all consultations with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultation(System.Int32)">
+            <summary>
+            Get consultation by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.CreateConsultation(HealthAidAPI.DTOs.CreateConsultationDto)">
+            <summary>
+            Create a new consultation
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.UpdateConsultation(System.Int32,HealthAidAPI.DTOs.UpdateConsultationDto)">
+            <summary>
+            Update consultation
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.DeleteConsultation(System.Int32)">
+            <summary>
+            Delete consultation
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.UpdateConsultationStatus(System.Int32,HealthAidAPI.DTOs.UpdateConsultationStatusDto)">
+            <summary>
+            Update consultation status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultationsByDoctor(System.Int32)">
+            <summary>
+            Get consultations by doctor
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultationsByPatient(System.Int32)">
+            <summary>
+            Get consultations by patient
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultationsByDateRange(System.DateTime,System.DateTime)">
+            <summary>
+            Get consultations by date range
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultationStats">
+            <summary>
+            Get consultation statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.GetConsultationModes">
+            <summary>
+            Get all consultation modes
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ConsultationsController.CheckConsultationExists(System.Int32)">
+            <summary>
+            Check if consultation exists
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetDoctors(HealthAidAPI.DTOs.DoctorFilterDto)">
+            <summary>
+            Get all doctors with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetDoctor(System.Int32)">
+            <summary>
+            Get doctor by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetDoctorByUser(System.Int32)">
+            <summary>
+            Get doctor by user ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.CreateDoctor(HealthAidAPI.DTOs.CreateDoctorDto)">
+            <summary>
+            Create a new doctor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.UpdateDoctor(System.Int32,HealthAidAPI.DTOs.UpdateDoctorDto)">
+            <summary>
+            Update doctor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.DeleteDoctor(System.Int32)">
+            <summary>
+            Delete doctor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.ToggleAvailability(System.Int32)">
+            <summary>
+            Toggle doctor availability
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetSpecializations">
+            <summary>
+            Get all specializations
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetDoctorStats">
+            <summary>
+            Get doctor statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetAvailableDoctors">
+            <summary>
+            Get available doctors
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.GetDoctorsBySpecialization(System.String)">
+            <summary>
+            Get doctors by specialization
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DoctorsController.CheckLicenseNumberExists(System.String)">
+            <summary>
+            Check if license number exists
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipment(HealthAidAPI.DTOs.EquipmentFilterDto)">
+            <summary>
+            Get all equipment with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipment(System.Int32)">
+            <summary>
+            Get equipment by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.CreateEquipment(HealthAidAPI.DTOs.CreateEquipmentDto)">
+            <summary>
+            Create new equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.UpdateEquipment(System.Int32,HealthAidAPI.DTOs.UpdateEquipmentDto)">
+            <summary>
+            Update equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.ScheduleMaintenance(System.Int32,HealthAidAPI.DTOs.MaintenanceScheduleDto)">
+            <summary>
+            Schedule maintenance for equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.TransferEquipment(System.Int32,HealthAidAPI.DTOs.EquipmentTransferDto)">
+            <summary>
+            Transfer equipment to new location
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.DeleteEquipment(System.Int32)">
+            <summary>
+            Delete equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.DeleteEquipmentByNgo(System.Int32)">
+            <summary>
+            Delete all equipment for a specific NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipmentByType(System.String)">
+            <summary>
+            Get equipment by type
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipmentByLocation(System.String)">
+            <summary>
+            Get equipment by location
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetCriticalEquipment">
+            <summary>
+            Get critical equipment (poor condition or in maintenance)
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipmentNeedingMaintenance">
+            <summary>
+            Get equipment needing maintenance
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipmentStats">
+            <summary>
+            Get equipment statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.GetEquipmentCountByNgo(System.Int32)">
+            <summary>
+            Get equipment count for a specific NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.PerformBulkUpdate(HealthAidAPI.DTOs.BulkEquipmentUpdateDto)">
+            <summary>
+            Perform bulk update on multiple equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.EquipmentController.SearchEquipment(System.String)">
+            <summary>
+            Search equipment
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetHealthGuides(HealthAidAPI.DTOs.HealthGuideFilterDto)">
+            <summary>
+            Get all health guides with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetHealthGuide(System.Int32)">
+            <summary>
+            Get health guide by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.CreateHealthGuide(HealthAidAPI.DTOs.CreateHealthGuideDto)">
+            <summary>
+            Create a new health guide
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.UpdateHealthGuide(System.Int32,HealthAidAPI.DTOs.UpdateHealthGuideDto)">
+            <summary>
+            Update health guide
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.DeleteHealthGuide(System.Int32)">
+            <summary>
+            Delete health guide
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.LikeHealthGuide(System.Int32)">
+            <summary>
+            Increment like count for a health guide
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.TogglePublishStatus(System.Int32)">
+            <summary>
+            Toggle publish status of a health guide
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetCategories">
+            <summary>
+            Get all available categories
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetLanguages">
+            <summary>
+            Get all available languages
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetHealthGuideStats">
+            <summary>
+            Get health guide statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetPopularGuides(System.Int32)">
+            <summary>
+            Get popular health guides
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.HealthGuidesController.GetRelatedGuides(System.Int32,System.Int32)">
+            <summary>
+            Get related health guides
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetMedicineRequests(HealthAidAPI.DTOs.MedicineRequestFilterDto)">
+            <summary>
+            Get all medicine requests with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetMedicineRequest(System.Int32)">
+            <summary>
+            Get medicine request by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.CreateMedicineRequest(HealthAidAPI.DTOs.CreateMedicineRequestDto)">
+            <summary>
+            Create a new medicine request
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.UpdateMedicineRequest(System.Int32,HealthAidAPI.DTOs.UpdateMedicineRequestDto)">
+            <summary>
+            Update a medicine request
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.DeleteMedicineRequest(System.Int32)">
+            <summary>
+            Delete a medicine request
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.UpdateStatus(System.Int32,HealthAidAPI.DTOs.UpdateMedicineRequestStatusDto)">
+            <summary>
+            Update medicine request status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetStats">
+            <summary>
+            Get medicine request statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetUrgentMedicineRequests">
+            <summary>
+            Get urgent medicine requests
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetOverdueMedicineRequests">
+            <summary>
+            Get overdue medicine requests
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.GetMedicineRequestsByPatient(System.Int32)">
+            <summary>
+            Get medicine requests by patient
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.FulfillMedicineRequest(System.Int32)">
+            <summary>
+            Fulfill a medicine request
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MedicineRequestsController.CancelMedicineRequest(System.Int32)">
+            <summary>
+            Cancel a medicine request
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetSessions(HealthAidAPI.DTOs.MentalSupportSessionFilterDto)">
+            <summary>
+            Get all mental support sessions with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetSession(System.Int32)">
+            <summary>
+            Get mental support session by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.CreateSession(HealthAidAPI.DTOs.CreateMentalSupportSessionDto)">
+            <summary>
+            Create a new mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.UpdateSession(System.Int32,HealthAidAPI.DTOs.UpdateMentalSupportSessionDto)">
+            <summary>
+            Update mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.DeleteSession(System.Int32)">
+            <summary>
+            Delete mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.CompleteSession(System.Int32,System.String)">
+            <summary>
+            Complete a mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.CancelSession(System.Int32,System.String)">
+            <summary>
+            Cancel a mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetSessionStats">
+            <summary>
+            Get mental support session statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetUpcomingSessions(System.Int32)">
+            <summary>
+            Get upcoming mental support sessions
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetPatientSessions(System.Int32)">
+            <summary>
+            Get mental support sessions for a specific patient
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetDoctorSessions(System.Int32)">
+            <summary>
+            Get mental support sessions for a specific doctor
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetDoctorAvailability(System.Int32,System.DateTime)">
+            <summary>
+            Get doctor availability for scheduling
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.RescheduleSession(System.Int32,System.DateTime)">
+            <summary>
+            Reschedule a mental support session
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MentalSupportSessionsController.GetSessionTypes">
+            <summary>
+            Get all available session types
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.GetMessages(HealthAidAPI.DTOs.MessageFilterDto)">
+            <summary>
+            Get all messages with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.GetMessage(System.Int32)">
+            <summary>
+            Get message by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.CreateMessage(HealthAidAPI.DTOs.CreateMessageDto)">
+            <summary>
+            Create a new message
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.CreateMessageByName(HealthAidAPI.DTOs.CreateMessageByNameDto)">
+            <summary>
+            Create a new message using user names
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.GetChatBetweenUsers(HealthAidAPI.DTOs.ChatRequestDto)">
+            <summary>
+            Get chat history between two users
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.MarkMessagesAsRead(HealthAidAPI.DTOs.MarkAsReadDto)">
+            <summary>
+            Mark messages as read
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.GetUnreadCount(System.String)">
+            <summary>
+            Get unread message count for a user
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.UpdateMessage(System.Int32,HealthAidAPI.DTOs.UpdateMessageDto)">
+            <summary>
+            Update a message
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.DeleteMessage(System.Int32)">
+            <summary>
+            Delete a message
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.DeleteAllMessages">
+            <summary>
+            Delete all messages (Admin only)
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.MessagesController.DeleteMessagesByUser(System.Int32)">
+            <summary>
+            Delete all messages for a specific user
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetMissions(HealthAidAPI.DTOs.NGOmission.NgoMissionFilterDto)">
+            <summary>
+            Get all NGO missions with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetMission(System.Int32)">
+            <summary>
+            Get NGO mission by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.CreateMission(HealthAidAPI.DTOs.NGOmission.CreateNgoMissionDto)">
+            <summary>
+            Create a new NGO mission
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.UpdateMission(System.Int32,HealthAidAPI.DTOs.NGOmission.UpdateNgoMissionDto)">
+            <summary>
+            Update an NGO mission
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.DeleteMission(System.Int32)">
+            <summary>
+            Delete an NGO mission
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.DeleteMissionsByNgo(System.Int32)">
+            <summary>
+            Delete all missions for a specific NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.SearchMissionsByLocation(System.String)">
+            <summary>
+            Search missions by location
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetMissionsByDateRange(HealthAidAPI.DTOs.NGOmission.DateRangeDto)">
+            <summary>
+            Get missions within a date range
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetMissionCountByNgo(System.Int32)">
+            <summary>
+            Get mission count for a specific NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetMissionStats">
+            <summary>
+            Get NGO mission statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NgoMissionsController.GetUpcomingMissions(System.Int32)">
+            <summary>
+            Get upcoming missions
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGOs(HealthAidAPI.DTOs.NGO.NgoFilterDto)">
+            <summary>
+            Get all NGOs with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGO(System.Int32)">
+            <summary>
+            Get NGO by ID with detailed information
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.CreateNGO(HealthAidAPI.DTOs.NGO.CreateNgoDto)">
+            <summary>
+            Create a new NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.UpdateNGO(System.Int32,HealthAidAPI.DTOs.NGO.UpdateNgoDto)">
+            <summary>
+            Update an NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.DeleteNGO(System.Int32)">
+            <summary>
+            Delete an NGO by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.DeleteNGOByName(System.String)">
+            <summary>
+            Delete an NGO by name
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGOsByStatus(System.String)">
+            <summary>
+            Get NGOs by verification status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.SearchNGOs(System.String)">
+            <summary>
+            Search NGOs by keyword
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGOsByArea(System.String)">
+            <summary>
+            Get NGOs by area of work
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGOsWithMissionCount">
+            <summary>
+            Get NGOs with mission counts
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.GetNGOStats">
+            <summary>
+            Get NGO statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NGOsController.VerifyNGO(System.Int32,System.String)">
+            <summary>
+            Verify/Update NGO status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetNotifications(HealthAidAPI.DTOs.NotificationFilterDto)">
+            <summary>
+            Get all notifications with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetNotification(System.Int32)">
+            <summary>
+            Get notification by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetNotificationsByReceiver(System.Int32)">
+            <summary>
+            Get notifications by receiver ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetUnreadNotifications(System.Int32)">
+            <summary>
+            Get unread notifications for a receiver
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.CreateNotification(HealthAidAPI.DTOs.CreateNotificationDto)">
+            <summary>
+            Create a new notification
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.CreateNotificationByName(HealthAidAPI.DTOs.CreateNotificationByNameDto)">
+            <summary>
+            Create a new notification using user names
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.UpdateNotification(System.Int32,HealthAidAPI.DTOs.UpdateNotificationDto)">
+            <summary>
+            Update a notification
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.MarkAsRead(System.Int32)">
+            <summary>
+            Mark a notification as read
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.MarkMultipleAsRead(HealthAidAPI.DTOs.MarkNotificationsAsReadDto)">
+            <summary>
+            Mark multiple notifications as read
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.MarkAllAsRead(System.Int32)">
+            <summary>
+            Mark all notifications as read for a receiver
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetNotificationStats(System.Nullable{System.Int32})">
+            <summary>
+            Get notification statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.GetUnreadCount(System.Int32)">
+            <summary>
+            Get unread notification count for a receiver
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.DeleteNotification(System.Int32)">
+            <summary>
+            Delete a notification
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.NotificationsController.DeleteNotificationsByReceiver(System.Int32)">
+            <summary>
+            Delete all notifications for a receiver
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatients(HealthAidAPI.DTOs.PatientFilterDto)">
+            <summary>
+            Get all patients with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatient(System.Int32)">
+            <summary>
+            Get patient by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatientByUser(System.Int32)">
+            <summary>
+            Get patient by user ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.CreatePatient(HealthAidAPI.DTOs.CreatePatientDto)">
+            <summary>
+            Create a new patient profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.UpdatePatient(System.Int32,HealthAidAPI.DTOs.UpdatePatientDto)">
+            <summary>
+            Update patient profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.DeletePatient(System.Int32)">
+            <summary>
+            Delete patient profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.ToggleActiveStatus(System.Int32)">
+            <summary>
+            Toggle patient active status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetBloodTypes">
+            <summary>
+            Get all blood types
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatientStats">
+            <summary>
+            Get patient statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatientsByNGO(System.Int32)">
+            <summary>
+            Get patients by NGO
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetPatientsByBloodType(System.String)">
+            <summary>
+            Get patients by blood type
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetMedicalSummary">
+            <summary>
+            Get patients medical summary
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.CheckPatientExists(System.Int32)">
+            <summary>
+            Check if patient exists
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PatientsController.GetTotalPatientsCount">
+            <summary>
+            Get total patients count
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetPrescriptions(HealthAidAPI.DTOs.PrescriptionFilterDto)">
+            <summary>
+            Get all prescriptions with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetPrescription(System.Int32)">
+            <summary>
+            Get prescription by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.CreatePrescription(HealthAidAPI.DTOs.CreatePrescriptionDto)">
+            <summary>
+            Create a new prescription
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.UpdatePrescription(System.Int32,HealthAidAPI.DTOs.UpdatePrescriptionDto)">
+            <summary>
+            Update prescription
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.DeletePrescription(System.Int32)">
+            <summary>
+            Delete prescription
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.CompletePrescription(System.Int32)">
+            <summary>
+            Complete a prescription
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.RequestRefill(HealthAidAPI.DTOs.RefillRequestDto)">
+            <summary>
+            Request a prescription refill
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.ApproveRefill(System.Int32,System.Int32)">
+            <summary>
+            Approve a prescription refill
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetPrescriptionStats">
+            <summary>
+            Get prescription statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetPatientPrescriptions(System.Int32)">
+            <summary>
+            Get prescriptions for a specific patient
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetDoctorPrescriptions(System.Int32)">
+            <summary>
+            Get prescriptions for a specific doctor
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetPatientPrescriptionSummary(System.Int32)">
+            <summary>
+            Get patient prescription summary
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.GetExpiringPrescriptions(System.Int32)">
+            <summary>
+            Get expiring prescriptions
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PrescriptionsController.ValidatePrescription(System.Int32)">
+            <summary>
+            Validate a prescription
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetAlerts(HealthAidAPI.DTOs.PublicAlertFilterDto)">
+            <summary>
+            Get all public alerts with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetAlert(System.Int32)">
+            <summary>
+            Get alert by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.CreateAlert(HealthAidAPI.DTOs.CreatePublicAlertDto)">
+            <summary>
+            Create a new public alert
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.UpdateAlert(System.Int32,HealthAidAPI.DTOs.UpdatePublicAlertDto)">
+            <summary>
+            Update an alert
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.DeleteAlert(System.Int32)">
+            <summary>
+            Delete an alert
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetRecentAlerts(System.Int32)">
+            <summary>
+            Get recent alerts
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetAlertsByUser(System.Int32)">
+            <summary>
+            Get alerts by user
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetActiveAlerts">
+            <summary>
+            Get active alerts
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.GetAlertStats">
+            <summary>
+            Get alert statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.ToggleAlertStatus(System.Int32,System.Boolean)">
+            <summary>
+            Toggle alert status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.PublicAlertsController.DeleteAllAlerts">
+            <summary>
+            Delete all alerts (Admin only)
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetRatings(HealthAidAPI.DTOs.Rating.RatingFilterDto)">
+            <summary>
+            Get all ratings with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetRating(System.Int32)">
+            <summary>
+            Get rating by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.CreateRating(HealthAidAPI.DTOs.Rating.CreateRatingDto)">
+            <summary>
+            Create a new rating
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.UpdateRating(System.Int32,HealthAidAPI.DTOs.Rating.UpdateRatingDto)">
+            <summary>
+            Update a rating
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.DeleteRating(System.Int32)">
+            <summary>
+            Delete a rating
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetRatingsByTarget(System.String,System.Int32)">
+            <summary>
+            Get ratings by target
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetAverageRating(System.String,System.Int32)">
+            <summary>
+            Get average rating for a target
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetRatingStats">
+            <summary>
+            Get rating statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.HasUserRated(System.Int32,System.String,System.Int32)">
+            <summary>
+            Check if user has rated a target
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.GetRecentRatings(System.Int32)">
+            <summary>
+            Get recent ratings
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.RatingsController.DeleteRatingsByUser(System.Int32)">
+            <summary>
+            Delete all ratings by user
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetServices(HealthAidAPI.DTOs.ServiceFilterDto)">
+            <summary>
+            Get all services with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetService(System.Int32)">
+            <summary>
+            Get service by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.CreateService(HealthAidAPI.DTOs.CreateServiceDto)">
+            <summary>
+            Create a new service
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.UpdateService(System.Int32,HealthAidAPI.DTOs.UpdateServiceDto)">
+            <summary>
+            Update a service
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.DeleteService(System.Int32)">
+            <summary>
+            Delete a service
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.AssignProvider(System.Int32,HealthAidAPI.DTOs.AssignServiceProviderDto)">
+            <summary>
+            Assign provider to a service
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.RemoveProvider(System.Int32)">
+            <summary>
+            Remove provider from a service
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetStats">
+            <summary>
+            Get service statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetServicesByProvider(System.Int32,System.String)">
+            <summary>
+            Get services by provider
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetFreeServices">
+            <summary>
+            Get free services
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.GetServicesByCategory(System.String)">
+            <summary>
+            Get services by category
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.ServicesController.ToggleServiceStatus(System.Int32)">
+            <summary>
+            Toggle service status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetSponsorships(HealthAidAPI.DTOs.SponsorshipFilterDto)">
+            <summary>
+            Get all sponsorships with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetSponsorship(System.Int32)">
+            <summary>
+            Get sponsorship by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.CreateSponsorship(HealthAidAPI.DTOs.CreateSponsorshipDto)">
+            <summary>
+            Create a new sponsorship
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.UpdateSponsorship(System.Int32,HealthAidAPI.DTOs.UpdateSponsorshipDto)">
+            <summary>
+            Update a sponsorship
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.DeleteSponsorship(System.Int32)">
+            <summary>
+            Delete a sponsorship
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.AddDonation(System.Int32,HealthAidAPI.DTOs.DonateToSponsorshipDto)">
+            <summary>
+            Add donation to a sponsorship
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.UpdateStatus(System.Int32,System.String)">
+            <summary>
+            Update sponsorship status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetStats">
+            <summary>
+            Get sponsorship statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetUrgentSponsorships">
+            <summary>
+            Get urgent sponsorships
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetFeaturedSponsorships(System.Int32)">
+            <summary>
+            Get featured sponsorships
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.GetTotalRaisedForPatient(System.Int32)">
+            <summary>
+            Get total raised for a patient
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.SponsorshipsController.CloseSponsorship(System.Int32)">
+            <summary>
+            Close a sponsorship
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransactions(HealthAidAPI.DTOs.TransactionFilterDto)">
+            <summary>
+            Get all transactions with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransaction(System.Int32)">
+            <summary>
+            Get transaction by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.CreateTransaction(HealthAidAPI.DTOs.CreateTransactionDto)">
+            <summary>
+            Create a new transaction
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.UpdateTransaction(System.Int32,HealthAidAPI.DTOs.UpdateTransactionDto)">
+            <summary>
+            Update transaction
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.DeleteTransaction(System.Int32)">
+            <summary>
+            Delete transaction
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.UpdateTransactionStatus(System.Int32,HealthAidAPI.DTOs.UpdateTransactionStatusDto)">
+            <summary>
+            Update transaction status
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransactionsByUser(System.Int32)">
+            <summary>
+            Get transactions by user
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransactionsByConsultation(System.Int32)">
+            <summary>
+            Get transactions by consultation
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransactionsByDateRange(System.DateTime,System.DateTime)">
+            <summary>
+            Get transactions by date range
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTransactionStats">
+            <summary>
+            Get transaction statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetFinancialSummary">
+            <summary>
+            Get financial summary
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetTotalRevenue(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Get total revenue
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.TransactionsController.GetPendingTransactions">
+            <summary>
+            Get pending transactions
+            </summary>
+        </member>
+        <member name="T:HealthAidAPI.Migrations.First">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.First.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.First.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.First.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HealthAidAPI.Migrations.F">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.F.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.F.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HealthAidAPI.Migrations.F.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
