@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IHealthGuideService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.HealthGuides;
 
 namespace HealthAidAPI.Services.Interfaces
 {

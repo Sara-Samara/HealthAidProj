@@ -1,6 +1,7 @@
-﻿// Services/Interfaces/IUserService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+﻿using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
+using HealthAidAPI.DTOs.Auth; 
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

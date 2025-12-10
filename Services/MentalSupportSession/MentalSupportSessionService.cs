@@ -1,11 +1,11 @@
 ﻿// Services/Implementations/MentalSupportSessionService.cs
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.MentalSupportSessions;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -106,14 +106,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<MentalSupportSessionDto>
-                {
-                    Items = sessions,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<MentalSupportSessionDto>(sessions, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

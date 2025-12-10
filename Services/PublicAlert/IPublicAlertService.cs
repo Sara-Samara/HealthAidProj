@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IPublicAlertService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.PublicAlerts;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

@@ -1,7 +1,7 @@
 ﻿// Controllers/RatingsController.cs
 using HealthAidAPI.DTOs;
-using HealthAidAPI.DTOs.Rating;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Ratings;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

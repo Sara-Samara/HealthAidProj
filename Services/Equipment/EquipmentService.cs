@@ -2,8 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Data;
 using HealthAidAPI.DTOs;
+
+using HealthAidAPI.DTOs.Equipments;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
 
@@ -136,14 +139,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<EquipmentDto>
-                {
-                    Items = equipment,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<EquipmentDto>(equipment, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,5 @@
 ﻿// Controllers/AuthController.cs
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Auth;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;

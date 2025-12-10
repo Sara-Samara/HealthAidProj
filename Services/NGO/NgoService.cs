@@ -5,9 +5,9 @@ using AutoMapper;
 using HealthAidAPI.Data;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
-using HealthAidAPI.DTOs.NGO;
-using HealthAidAPI.DTOs.NGOmission;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.NGOs;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.NgoMissions;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -84,14 +84,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<NgoDto>
-                {
-                    Items = ngos,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<NgoDto>(ngos, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

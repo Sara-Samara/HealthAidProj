@@ -1,6 +1,7 @@
 ﻿// Services/Interfaces/IDoctorService.cs
 using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.Doctors;
 
 namespace HealthAidAPI.Services.Interfaces
 {

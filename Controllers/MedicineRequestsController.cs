@@ -1,11 +1,9 @@
 ﻿// Controllers/MedicineRequestsController.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
-using HealthAidAPI.Services.Interfaces;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.MedicineRequests;
 using HealthAidAPI.Services.MedicineRequest;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace HealthAidAPI.Controllers
 {

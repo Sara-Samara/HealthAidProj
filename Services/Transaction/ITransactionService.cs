@@ -1,5 +1,5 @@
-﻿using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+﻿using HealthAidAPI.DTOs.Transactions;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

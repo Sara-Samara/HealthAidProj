@@ -1,11 +1,11 @@
 ﻿// Services/Implementations/ServiceService.cs
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Services;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -17,6 +17,7 @@ namespace HealthAidAPI.Services.Implementations
 
         public ServiceService(ApplicationDbContext context, IMapper mapper, ILogger<ServiceService> logger)
         {
+
             _context = context;
             _mapper = mapper;
             _logger = logger;
@@ -108,14 +109,8 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<ServiceDto>
-                {
-                    Items = services,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                // تمرير القيم عبر الـ Constructor
+                return new PagedResult<ServiceDto>(services, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

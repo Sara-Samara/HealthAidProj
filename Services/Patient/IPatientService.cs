@@ -1,6 +1,5 @@
-﻿using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
-
+﻿using HealthAidAPI.DTOs.Patients;
+using HealthAidAPI.Helpers;
 namespace HealthAidAPI.Services.Interfaces
 {
     public interface IPatientService

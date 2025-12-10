@@ -1,6 +1,6 @@
 ﻿// Controllers/EquipmentController.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Equipments;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

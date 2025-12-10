@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IRatingService.cs
-using HealthAidAPI.DTOs.Rating;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Ratings;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

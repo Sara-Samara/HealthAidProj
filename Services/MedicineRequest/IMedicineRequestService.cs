@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IMedicineRequestService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.MedicineRequests;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.MedicineRequest
 {

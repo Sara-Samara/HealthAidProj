@@ -1,10 +1,12 @@
 ﻿// Controllers/UsersController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
+using HealthAidAPI.DTOs.Users;
 using HealthAidAPI.DTOs;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Auth;
 
 namespace HealthAidAPI.Controllers
 {

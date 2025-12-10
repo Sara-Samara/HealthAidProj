@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IMessageService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Messages;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

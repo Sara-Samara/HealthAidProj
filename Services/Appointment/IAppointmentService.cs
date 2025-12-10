@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IAppointmentService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.Appointments;
 
 namespace HealthAidAPI.Services.Interfaces
 {

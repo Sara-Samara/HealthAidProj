@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
+
+using HealthAidAPI.DTOs.Auth;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
 using System.Security.Cryptography;
@@ -133,7 +135,14 @@ namespace HealthAidAPI.Services.Implementations
                 await _context.SaveChangesAsync();
 
                 // Send verification email
-                await SendVerificationEmail(user);
+                try
+                {
+                    await SendVerificationEmail(user);
+                }
+                catch (Exception)
+                {
+                    // تجاهل خطأ الإيميل وأكمل التسجيل
+                }
 
                 // Generate tokens
                 var token = _tokenService.GenerateToken(_mapper.Map<UserDto>(user));

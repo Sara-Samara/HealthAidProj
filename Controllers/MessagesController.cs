@@ -1,6 +1,6 @@
 ﻿// Controllers/MessagesController.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Messages;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

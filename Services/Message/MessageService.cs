@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Messages;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -93,14 +94,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<MessageDto>
-                {
-                    Items = messages,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<MessageDto>(messages, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

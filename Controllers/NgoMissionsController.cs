@@ -1,6 +1,6 @@
 ﻿// Controllers/NgoMissionsController.cs
-using HealthAidAPI.DTOs.NGOmission;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.NgoMissions;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

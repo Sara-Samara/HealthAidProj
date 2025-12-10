@@ -1,11 +1,14 @@
 ﻿// Services/Implementations/DoctorService.cs
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
+using HealthAidAPI.DTOs.Doctors;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -98,14 +101,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<DoctorDto>
-                {
-                    Items = doctors,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<DoctorDto>(doctors, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {

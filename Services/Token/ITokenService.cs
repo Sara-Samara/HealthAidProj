@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/ITokenService.cs
 using System.Security.Claims;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
 
 namespace HealthAidAPI.Services.Interfaces
 {

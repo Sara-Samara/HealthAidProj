@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 

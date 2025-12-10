@@ -1,13 +1,20 @@
 ﻿using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.Transactions;
+using HealthAidAPI.DTOs.Donations;
+using HealthAidAPI.DTOs.Consultations;
+using HealthAidAPI.DTOs.MedicineRequests;
 using HealthAidAPI.Models;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace HealthAidAPI.Services.Implementations
-{
+namespace HealthAidAPI.Services
+{ 
+
+
     public class TransactionService : ITransactionService
     {
         private readonly ApplicationDbContext _context;
@@ -121,14 +128,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<TransactionDto>
-                {
-                    Items = transactions,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<TransactionDto>(transactions, totalCount, filter.Page, filter.PageSize);
             }
             catch (Exception ex)
             {
