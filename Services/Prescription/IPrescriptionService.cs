@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/IPrescriptionService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Prescriptions;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

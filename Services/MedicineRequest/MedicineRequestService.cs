@@ -1,9 +1,9 @@
 ﻿// Services/Implementations/MedicineRequestService.cs
 using AutoMapper;
+using Azure.Core;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
-using HealthAidAPI.Services.Interfaces;
+using HealthAidAPI.DTOs.MedicineRequests;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.MedicineRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -119,14 +119,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<MedicineRequestDto>
-                {
-                    Items = medicineRequests,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<MedicineRequestDto>(medicineRequests, totalCount);
             }
             catch (Exception ex)
             {

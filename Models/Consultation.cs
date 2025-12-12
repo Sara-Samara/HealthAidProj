@@ -43,7 +43,6 @@ namespace HealthAidAPI.Models
         public int? AppointmentId { get; set; }
         public virtual Appointment? Appointment { get; set; }
 
-        // الخصائص الجديدة المطلوبة للـ APIs
         public DateTime Date
         {
             get => ConsDate ?? DateTime.MinValue;

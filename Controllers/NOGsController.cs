@@ -1,6 +1,6 @@
 ﻿// Controllers/NGOsController.cs
-using HealthAidAPI.DTOs.NGO;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.NGOs;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

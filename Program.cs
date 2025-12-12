@@ -1,9 +1,10 @@
 ﻿using HealthAidAPI.Data;
 using HealthAidAPI.Helpers;
 using HealthAidAPI.Models;
+using HealthAidAPI.Services;
 using HealthAidAPI.Services.Implementations;
 using HealthAidAPI.Services.Interfaces;
-using HealthAidAPI.Services.MedicineRequest;
+using HealthAidAPI.Services.MedicineRequest; // تأكد من Namespace السيرفس الخاص بطلبات الدواء
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,31 +13,47 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// 1. Database Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+// 2. AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<INgoMissionService, NgoMissionService>();
+// 3. Register Services (Dependency Injection)
+// ================================================================
+// الخدمات القديمة
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IPublicAlertService, PublicAlertService>();
-builder.Services.AddScoped<INgoService, NgoService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<INgoService, NgoService>();
+builder.Services.AddScoped<INgoMissionService, NgoMissionService>();
 builder.Services.AddScoped<IConsultationService, ConsultationService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<ISponsorshipService, SponsorshipService>();
 builder.Services.AddScoped<IMedicineRequestService, MedicineRequestService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IPublicAlertService, PublicAlertService>();
+// Register External API Service
+builder.Services.AddHttpClient<IExternalMedicalService, ExternalMedicalService>();
+// +++ الخدمات الجديدة التي أضفناها مؤخراً (مهم جداً إضافتها) +++
+builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IEmergencyService, EmergencyService>();
+builder.Services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IMentalSupportSessionService, MentalSupportSessionService>(); // فعل هذا السطر إذا أنشأت السيرفس
+builder.Services.AddScoped<IHealthGuideService, HealthGuideService>(); // فعل هذا السطر إذا أنشأت السيرفس
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>(); // فعل هذا السطر إذا أنشأت السيرفس
+builder.Services.AddScoped<IEquipmentService, EquipmentService>(); // فعل هذا السطر إذا أنشأت السيرفس
+builder.Services.AddScoped<IRatingService, RatingService>(); // فعل هذا السطر إذا أنشأت السيرفس
+// ================================================================
+
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
 
@@ -66,7 +83,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AllUsers", policy => policy.RequireRole("Admin", "Doctor", "Patient", "Donor"));
 });
 
-
 builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers()
@@ -75,7 +91,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
         options.JsonSerializerOptions.WriteIndented = true;
     });
-
 
 builder.Services.AddCors(options =>
 {
@@ -87,8 +102,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 builder.Services.AddEndpointsApiExplorer();
+
+// 4. Swagger Configuration
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -102,6 +118,10 @@ builder.Services.AddSwaggerGen(c =>
             Email = "support@healthaid.ps"
         }
     });
+
+    // +++ حل مشكلة تكرار الأسماء في Swagger بسبب الـ Namespaces الجديدة +++
+    c.CustomSchemaIds(type => type.ToString());
+    // ===================================================================
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -131,15 +151,15 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-
-
+// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthAid API v1.0");
-    c.RoutePrefix = "swagger"; 
+    c.RoutePrefix = "swagger";
 });
 
+// Database Seeding
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -147,6 +167,8 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
+        // يفضل استخدام MigrateAsync في الإنتاج بدلاً من EnsureCreatedAsync
+        // await db.Database.MigrateAsync(); 
         await db.Database.EnsureCreatedAsync();
 
         if (!db.Users.Any(u => u.Email == "admin@healthaid.ps"))
@@ -181,10 +203,8 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine($"ℹ️ Note: {ex.Message}");
-      
     }
 }
-
 
 async Task<string> GenerateUniquePhoneNumberAsync(ApplicationDbContext dbContext)
 {
@@ -197,11 +217,10 @@ async Task<string> GenerateUniquePhoneNumberAsync(ApplicationDbContext dbContext
         phoneNumber = $"+97059{random.Next(1000000, 9999999)}";
         attempts++;
 
-       
         var exists = await dbContext.Users.AnyAsync(u => u.Phone == phoneNumber);
         if (!exists) break;
 
-        if (attempts > 10) 
+        if (attempts > 10)
         {
             phoneNumber = $"+97059{DateTime.Now.Ticks % 10000000}";
             break;
@@ -218,7 +237,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.MapGet("/", () =>
 {

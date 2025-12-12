@@ -1,5 +1,4 @@
-﻿// DTOs/StatsDto.cs
-namespace HealthAidAPI.DTOs
+﻿namespace HealthAidAPI.DTOs.Users
 {
     public class DashboardStatsDto
     {
@@ -9,11 +8,5 @@ namespace HealthAidAPI.DTOs
         public int Doctors { get; set; }
         public int Donors { get; set; }
         public int RecentUsers { get; set; }
-    }
-
-    public class DailyRegistrationDto
-    {
-        public DateTime Date { get; set; }
-        public int Count { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿// Models/ApiResponse.cs
-namespace HealthAidAPI.Models
+﻿namespace HealthAidAPI.Helpers
 {
     public class ApiResponse<T>
     {

@@ -1,12 +1,11 @@
 ﻿// Services/Implementations/NgoMissionService.cs
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
-using HealthAidAPI.DTOs.NGOmission;
-
+using HealthAidAPI.Helpers;
+using HealthAidAPI.DTOs.NgoMissions;
 namespace HealthAidAPI.Services.Implementations
 {
     public class NgoMissionService : INgoMissionService
@@ -111,14 +110,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<NgoMissionDto>
-                {
-                    Items = missions,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<NgoMissionDto>(missions, totalCount);
             }
             catch (Exception ex)
             {

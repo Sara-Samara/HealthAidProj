@@ -11,12 +11,11 @@ namespace HealthAidAPI.Helpers
         public bool HasPrevious => Page > 1;
         public bool HasNext => Page < TotalPages;
 
-        public PagedResult(List<T> items, int totalCount, int page, int pageSize)
+        public PagedResult(List<T> items, int totalCount)
         {
             Items = items;
             TotalCount = totalCount;
-            Page = page;
-            PageSize = pageSize;
+            
         }
     }
 }

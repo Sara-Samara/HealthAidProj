@@ -1,39 +1,80 @@
-﻿// Controllers/NotificationsController.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+﻿using HealthAidAPI.DTOs.Notifications;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace HealthAidAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+ 
     [Produces("application/json")]
     public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _notificationService;
         private readonly ILogger<NotificationsController> _logger;
 
-        public NotificationsController(INotificationService notificationService, ILogger<NotificationsController> logger)
+        public NotificationsController(
+            INotificationService notificationService,
+            ILogger<NotificationsController> logger)
         {
             _notificationService = notificationService;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Get all notifications with filtering and pagination
-        /// </summary>
+        // ============================
+        // 🔐 Auth Helpers
+        // ============================
+        private int GetCurrentUserId()
+        {
+            var claim =
+                User.FindFirst("id") ??
+                User.FindFirst(ClaimTypes.NameIdentifier) ??
+                User.FindFirst("sub");
+
+            if (claim == null)
+                throw new UnauthorizedAccessException("User not logged in");
+
+            if (!int.TryParse(claim.Value, out int userId))
+                throw new UnauthorizedAccessException("Invalid user id in token");
+
+            return userId;
+        }
+
+        private bool IsAdmin =>
+            User.IsInRole("Admin") || User.IsInRole("Manager");
+
+        private IActionResult UnauthorizedUser() =>
+            Unauthorized(new { 
+                sucsess=false,
+
+                Message = "You must be logged in to perform this action." });
+
+        private IActionResult ForbiddenUser() =>
+            Forbid();
+
+        // ============================
+        // GET Notifications
+        // ============================
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResult<NotificationDto>), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<PagedResult<NotificationDto>>> GetNotifications([FromQuery] NotificationFilterDto filter)
+        public async Task<IActionResult> GetNotifications([FromQuery] NotificationFilterDto filter)
         {
             try
             {
+                int currentUserId = GetCurrentUserId();
+
+                
+                if (!IsAdmin && filter.SenderId!=currentUserId)
+                {
+                    filter.ReceiverId = currentUserId;
+                    throw new UnauthorizedAccessException();
+                }
+
                 var result = await _notificationService.GetNotificationsAsync(filter);
+
                 return Ok(new ApiResponse<PagedResult<NotificationDto>>
                 {
                     Success = true,
@@ -41,36 +82,35 @@ namespace HealthAidAPI.Controllers
                     Data = result
                 });
             }
+            catch (UnauthorizedAccessException)
+            {
+           return     Unauthorized(new
+                {
+                    sucsess = false,
+
+                    Message = "You must be logged in to perform this action."
+                });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving notifications");
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving notifications"
-                });
+                return BadRequest(new { Message = "Failed to load notifications." });
             }
         }
 
-        /// <summary>
-        /// Get notification by ID
-        /// </summary>
+    
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(NotificationDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<NotificationDto>> GetNotification(int id)
+        public async Task<IActionResult> GetNotification(int id)
         {
             try
             {
+                int currentUserId = GetCurrentUserId();
+
                 var notification = await _notificationService.GetNotificationByIdAsync(id);
                 if (notification == null)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Notification with ID {id} not found"
-                    });
-                }
+                    throw new NullReferenceException();
+
+                
 
                 return Ok(new ApiResponse<NotificationDto>
                 {
@@ -79,87 +119,34 @@ namespace HealthAidAPI.Controllers
                     Data = notification
                 });
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving notification {NotificationId}", id);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving the notification"
-                });
-            }
-        }
 
-        /// <summary>
-        /// Get notifications by receiver ID
-        /// </summary>
-        [HttpGet("receiver/{receiverId}")]
-        [ProducesResponseType(typeof(IEnumerable<NotificationDto>), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<IEnumerable<NotificationDto>>> GetNotificationsByReceiver(int receiverId)
-        {
-            try
+            catch (NullReferenceException)
             {
-                var notifications = await _notificationService.GetNotificationsByReceiverAsync(receiverId);
-                return Ok(new ApiResponse<IEnumerable<NotificationDto>>
-                {
-                    Success = true,
-                    Message = $"Notifications for receiver {receiverId} retrieved successfully",
-                    Data = notifications
-                });
+                return NotFound(new { Message = "Notification not found." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving notifications for receiver {ReceiverId}", receiverId);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving notifications"
-                });
+                _logger.LogError(ex, "Error retrieving notification");
+                return BadRequest(new { Message = "Failed to retrieve notification." });
             }
         }
 
-        /// <summary>
-        /// Get unread notifications for a receiver
-        /// </summary>
-        [HttpGet("receiver/{receiverId}/unread")]
-        [ProducesResponseType(typeof(IEnumerable<NotificationDto>), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<IEnumerable<NotificationDto>>> GetUnreadNotifications(int receiverId)
-        {
-            try
-            {
-                var notifications = await _notificationService.GetUnreadNotificationsAsync(receiverId);
-                return Ok(new ApiResponse<IEnumerable<NotificationDto>>
-                {
-                    Success = true,
-                    Message = $"Unread notifications for receiver {receiverId} retrieved successfully",
-                    Data = notifications
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving unread notifications for receiver {ReceiverId}", receiverId);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving unread notifications"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Create a new notification
-        /// </summary>
+        // ============================
+        // CREATE Notification
+        // ============================
         [HttpPost]
-        [ProducesResponseType(typeof(NotificationDto), 201)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<NotificationDto>> CreateNotification(CreateNotificationDto createNotificationDto)
+        public async Task<IActionResult> CreateNotification(CreateNotificationDto dto)
         {
             try
             {
-                var notification = await _notificationService.CreateNotificationAsync(createNotificationDto);
-                return CreatedAtAction(nameof(GetNotification), new { id = notification.NotificationId },
+                int currentUserId = GetCurrentUserId();
+
+                dto.SenderId = currentUserId;
+
+                var notification = await _notificationService.CreateNotificationAsync(dto);
+
+                return CreatedAtAction(nameof(GetNotification),
+                    new { id = notification.NotificationId },
                     new ApiResponse<NotificationDto>
                     {
                         Success = true,
@@ -167,342 +154,136 @@ namespace HealthAidAPI.Controllers
                         Data = notification
                     });
             }
-            catch (ArgumentException ex)
+            catch (UnauthorizedAccessException)
             {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
+                return UnauthorizedUser();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating notification");
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while creating the notification"
-                });
+                return BadRequest(new { Message = "Failed to create notification." });
             }
         }
 
-        /// <summary>
-        /// Create a new notification using user names
-        /// </summary>
-        [HttpPost("by-name")]
-        [ProducesResponseType(typeof(NotificationDto), 201)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<NotificationDto>> CreateNotificationByName(CreateNotificationByNameDto createNotificationDto)
-        {
-            try
-            {
-                var notification = await _notificationService.CreateNotificationByNameAsync(createNotificationDto);
-                return CreatedAtAction(nameof(GetNotification), new { id = notification.NotificationId },
-                    new ApiResponse<NotificationDto>
-                    {
-                        Success = true,
-                        Message = "Notification created successfully",
-                        Data = notification
-                    });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = ex.Message
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error creating notification by name");
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while creating the notification"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Update a notification
-        /// </summary>
+        // ============================
+        // UPDATE Notification
+        // ============================
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(NotificationDto), 200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<NotificationDto>> UpdateNotification(int id, UpdateNotificationDto updateNotificationDto)
+        public async Task<IActionResult> UpdateNotification(int id, UpdateNotificationDto dto)
         {
             try
             {
-                var notification = await _notificationService.UpdateNotificationAsync(id, updateNotificationDto);
-                if (notification == null)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Notification with ID {id} not found"
-                    });
-                }
+                int currentUserId = GetCurrentUserId();
+
+                var notif = await _notificationService.GetNotificationByIdAsync(id);
+                if (notif == null)
+                    return NotFound(new { Message = "Notification not found." });
+
+                if (!IsAdmin && notif.SenderId != currentUserId)
+                   throw new UnauthorizedAccessException();
+
+                var updated = await _notificationService.UpdateNotificationAsync(id, dto);
 
                 return Ok(new ApiResponse<NotificationDto>
                 {
                     Success = true,
                     Message = "Notification updated successfully",
-                    Data = notification
+                    Data = updated
                 });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating notification {NotificationId}", id);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while updating the notification"
-                });
+                _logger.LogError(ex, "Error updating notification");
+                return BadRequest(new { Message = "Failed to update notification." });
             }
         }
 
-        /// <summary>
-        /// Mark a notification as read
-        /// </summary>
+        // ============================
+        // MARK AS READ
+        // ============================
         [HttpPatch("{id}/mark-read")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> MarkAsRead(int id)
         {
             try
             {
-                var result = await _notificationService.MarkAsReadAsync(id);
-                if (!result)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Notification with ID {id} not found or already read"
-                    });
-                }
+                int currentUserId = GetCurrentUserId();
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Notification marked as read successfully"
-                });
+                var notif = await _notificationService.GetNotificationByIdAsync(id);
+                if (notif == null)
+                    return NotFound(new { Message = "Notification not found." });
+
+                if (!IsAdmin && notif.SenderId != currentUserId)
+                    throw new UnauthorizedAccessException();
+
+                await _notificationService.MarkAsReadAsync(id);
+
+                return Ok(new { Message = "Notification marked as read." });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error marking notification {NotificationId} as read", id);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while marking the notification as read"
-                });
+                _logger.LogError(ex, "Error marking notification");
+                return BadRequest(new { Message = "Failed to mark notification as read." });
             }
         }
 
-        /// <summary>
-        /// Mark multiple notifications as read
-        /// </summary>
-        [HttpPatch("mark-read-multiple")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> MarkMultipleAsRead(MarkNotificationsAsReadDto markAsReadDto)
-        {
-            try
-            {
-                var result = await _notificationService.MarkMultipleAsReadAsync(markAsReadDto);
-                if (!result)
-                {
-                    return Ok(new ApiResponse<object>
-                    {
-                        Success = true,
-                        Message = "No unread notifications found to mark as read"
-                    });
-                }
-
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Notifications marked as read successfully"
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error marking multiple notifications as read");
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while marking notifications as read"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Mark all notifications as read for a receiver
-        /// </summary>
-        [HttpPatch("receiver/{receiverId}/mark-all-read")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> MarkAllAsRead(int receiverId)
-        {
-            try
-            {
-                var result = await _notificationService.MarkAllAsReadAsync(receiverId);
-                if (!result)
-                {
-                    return Ok(new ApiResponse<object>
-                    {
-                        Success = true,
-                        Message = "No unread notifications found to mark as read"
-                    });
-                }
-
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "All notifications marked as read successfully"
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error marking all notifications as read for receiver {ReceiverId}", receiverId);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while marking notifications as read"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Get notification statistics
-        /// </summary>
-        [HttpGet("stats")]
-        [ProducesResponseType(typeof(NotificationStatsDto), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<NotificationStatsDto>> GetNotificationStats([FromQuery] int? receiverId = null)
-        {
-            try
-            {
-                var stats = await _notificationService.GetNotificationStatsAsync(receiverId);
-                return Ok(new ApiResponse<NotificationStatsDto>
-                {
-                    Success = true,
-                    Message = receiverId.HasValue ?
-                        $"Notification statistics for receiver {receiverId}" :
-                        "Global notification statistics",
-                    Data = stats
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving notification statistics");
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving notification statistics"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Get unread notification count for a receiver
-        /// </summary>
-        [HttpGet("receiver/{receiverId}/unread-count")]
-        [ProducesResponseType(typeof(int), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<int>> GetUnreadCount(int receiverId)
-        {
-            try
-            {
-                var count = await _notificationService.GetUnreadCountAsync(receiverId);
-                return Ok(new ApiResponse<int>
-                {
-                    Success = true,
-                    Message = $"Unread notification count for receiver {receiverId}",
-                    Data = count
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting unread count for receiver {ReceiverId}", receiverId);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while getting unread count"
-                });
-            }
-        }
-
-        /// <summary>
-        /// Delete a notification
-        /// </summary>
+        // ============================
+        // DELETE ONE
+        // ============================
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteNotification(int id)
         {
             try
             {
-                var result = await _notificationService.DeleteNotificationAsync(id);
-                if (!result)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"Notification with ID {id} not found"
-                    });
-                }
+                int currentUserId = GetCurrentUserId();
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Notification deleted successfully"
-                });
+                var notif = await _notificationService.GetNotificationByIdAsync(id);
+                if (notif == null)
+                    return NotFound(new { Message = "Notification not found." });
+
+                if (!IsAdmin && notif.SenderId != currentUserId)
+                   throw new UnauthorizedAccessException();
+
+                await _notificationService.DeleteNotificationAsync(id);
+
+                return Ok(new { Message = "Notification deleted successfully." });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting notification {NotificationId}", id);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while deleting the notification"
-                });
+                _logger.LogError(ex, "Error deleting notification");
+                return BadRequest(new { Message = "Failed to delete notification." });
             }
         }
 
-        /// <summary>
-        /// Delete all notifications for a receiver
-        /// </summary>
+        // ============================
+        // DELETE ALL FOR RECEIVER (Admin)
+        // ============================
         [HttpDelete("receiver/{receiverId}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteNotificationsByReceiver(int receiverId)
         {
             try
             {
-                var result = await _notificationService.DeleteNotificationsByReceiverAsync(receiverId);
-                if (!result)
-                {
-                    return NotFound(new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = $"No notifications found for receiver {receiverId}"
-                    });
-                }
+             
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = $"All notifications for receiver {receiverId} deleted successfully"
-                });
+                await _notificationService.DeleteNotificationsByReceiverAsync(receiverId);
+
+                return Ok(new { Message = "All notifications deleted for this user." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting notifications for receiver {ReceiverId}", receiverId);
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "An error occurred while deleting notifications"
-                });
+                _logger.LogError(ex, "Error deleting notifications");
+                return BadRequest(new { Message = "Failed to delete notifications." });
             }
         }
     }

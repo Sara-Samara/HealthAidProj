@@ -1,6 +1,7 @@
-﻿// Services/Interfaces/IUserService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+﻿using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users;
+using HealthAidAPI.DTOs.Auth; 
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {
@@ -15,7 +16,8 @@ namespace HealthAidAPI.Services.Interfaces
         Task<bool> DeactivateUserAsync(int id);
         Task<bool> ActivateUserAsync(int id);
         Task<UserDto?> GetUserByEmailAsync(string email);
-        Task<bool> EmailExistsAsync(string email);
+        
+
         Task<IEnumerable<UserDto>> GetUsersByRoleAsync(string role);
         Task<DashboardStatsDto> GetDashboardStatsAsync();
         Task<IEnumerable<DailyRegistrationDto>> GetRecentRegistrationsAsync(int days = 7);

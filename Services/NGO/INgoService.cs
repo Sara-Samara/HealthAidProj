@@ -1,6 +1,6 @@
 ﻿// Services/Interfaces/INgoService.cs
-using HealthAidAPI.DTOs.NGO;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.NGOs;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Interfaces
 {

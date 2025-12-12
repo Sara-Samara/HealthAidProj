@@ -1,9 +1,12 @@
 ﻿// Services/Implementations/UserService.cs
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
+using HealthAidAPI.Helpers;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Users; 
+using HealthAidAPI.DTOs.Auth;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
 
@@ -15,6 +18,7 @@ namespace HealthAidAPI.Services.Implementations
         private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
+       
 
         public UserService(ApplicationDbContext context, IPasswordHasher passwordHasher,
             IMapper mapper, ILogger<UserService> logger)
@@ -111,19 +115,12 @@ namespace HealthAidAPI.Services.Implementations
                 var totalCount = await query.CountAsync();
 
                 var users = await query
-                    .Skip((filter.Page - 1) * filter.PageSize)
-                    .Take(filter.PageSize)
+                 
                     .Select(u => _mapper.Map<UserDto>(u))
                     .ToListAsync();
 
-                return new PagedResult<UserDto>
-                {
-                    Items = users,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+
+                return new PagedResult<UserDto>(users, totalCount  );
             }
             catch (Exception ex)
             {
@@ -214,17 +211,30 @@ namespace HealthAidAPI.Services.Implementations
 
         public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordDto changePasswordDto)
         {
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null) return false;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (!_passwordHasher.VerifyPassword(changePasswordDto.CurrentPassword, user.PasswordHash))
+            if (user == null)
                 return false;
 
+            bool validCurrentPassword =
+                _passwordHasher.VerifyPassword(
+                    changePasswordDto.CurrentPassword,
+                    user.PasswordHash
+                );
+
+            if (!validCurrentPassword)
+                return false;
+
+            // Update password
             user.PasswordHash = _passwordHasher.HashPassword(changePasswordDto.NewPassword);
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Password changed for user: {Email}", user.Email);
+
+            _logger.LogInformation("Password changed for user: {UserId}", userId);
+
             return true;
         }
+
+
 
         public async Task<bool> DeactivateUserAsync(int id)
         {
@@ -309,9 +319,21 @@ namespace HealthAidAPI.Services.Implementations
             return registrations;
         }
 
-        public Task<bool> DeleteUserByEmailAsync(string email)
+        public async Task<bool> DeleteUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+                return false;
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User deleted by email: {Email}", email);
+
+            return true;
         }
+
+       
     }
 }

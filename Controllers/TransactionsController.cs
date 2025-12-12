@@ -1,234 +1,266 @@
-﻿using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+﻿using HealthAidAPI.DTOs.Transactions;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace HealthAidAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     [Produces("application/json")]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
         private readonly ILogger<TransactionsController> _logger;
 
-        public TransactionsController(ITransactionService transactionService, ILogger<TransactionsController> logger)
+        public TransactionsController(
+            ITransactionService transactionService,
+            ILogger<TransactionsController> logger)
         {
             _transactionService = transactionService;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Get all transactions with filtering and pagination
-        /// </summary>
+        // ============================
+        // 🔐 Auth Helpers
+        // ============================
+        private int GetCurrentUserId()
+        {
+            var claim =
+                User.FindFirst("id") ??
+                User.FindFirst(ClaimTypes.NameIdentifier) ??
+                User.FindFirst("nameid");
+
+            if (claim == null || !int.TryParse(claim.Value, out int userId))
+                throw new UnauthorizedAccessException("User not logged in");
+
+            return userId;
+        }
+
+        private bool IsAdmin =>
+            User.IsInRole("Admin") ||
+            User.IsInRole("Manager") ||
+            User.IsInRole("Finance");
+
+        private IActionResult UnauthorizedResponse(string msg = "You must be logged in.")
+            => Unauthorized(new ApiResponse<object>
+            {
+                Success = false,
+                Message = msg
+            });
+
+        // ============================
+        // GET Transactions (Admin: all / User: his)
+        // ============================
         [HttpGet]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(PagedResult<TransactionDto>), 200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<PagedResult<TransactionDto>>> GetTransactions([FromQuery] TransactionFilterDto filter)
+        public async Task<IActionResult> GetTransactions([FromQuery] TransactionFilterDto filter)
         {
             try
             {
+                int currentUserId = GetCurrentUserId();
+
+                if (!IsAdmin)
+                    filter.UserId = currentUserId;
+
                 var result = await _transactionService.GetTransactionsAsync(filter);
-                return Ok(result);
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Transactions retrieved successfully",
+                    Data = result
+                });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedResponse();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving transactions");
-                return BadRequest(new { message = "An error occurred while retrieving transactions" });
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Internal server error"
+                });
             }
         }
 
-        /// <summary>
-        /// Get transaction by ID
-        /// </summary>
+        // ============================
+        // GET Single Transaction
+        // ============================
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Manager,Finance,User")]
-        [ProducesResponseType(typeof(TransactionDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<TransactionDto>> GetTransaction(int id)
-        {
-            var transaction = await _transactionService.GetTransactionByIdAsync(id);
-            if (transaction == null)
-                return NotFound(new { message = "Transaction not found" });
-
-            return Ok(transaction);
-        }
-
-        /// <summary>
-        /// Create a new transaction
-        /// </summary>
-        [HttpPost]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(TransactionDto), 201)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<TransactionDto>> CreateTransaction(CreateTransactionDto transactionDto)
+        public async Task<IActionResult> GetTransaction(int id)
         {
             try
             {
-                var transaction = await _transactionService.CreateTransactionAsync(transactionDto);
-                return CreatedAtAction(nameof(GetTransaction), new { id = transaction.TransactionId }, transaction);
+                int currentUserId = GetCurrentUserId();
+
+                var transaction = await _transactionService.GetTransactionByIdAsync(id);
+                if (transaction == null)
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Transaction not found"
+                    });
+
+                if (!IsAdmin && transaction.UserId != currentUserId)
+                    return Forbid();
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Transaction retrieved successfully",
+                    Data = transaction
+                });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedResponse();
+            }
+        }
+
+        // ============================
+        // CREATE Transaction
+        // ============================
+        [HttpPost]
+        public async Task<IActionResult> CreateTransaction(CreateTransactionDto dto)
+        {
+            try
+            {
+                int currentUserId = GetCurrentUserId();
+
+                dto.UserId = currentUserId;
+
+                var transaction = await _transactionService.CreateTransactionAsync(dto);
+
+                return CreatedAtAction(nameof(GetTransaction),
+                    new { id = transaction.TransactionId },
+                    new ApiResponse<object>
+                    {
+                        Success = true,
+                        Message = "Transaction created successfully",
+                        Data = transaction
+                    });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedResponse();
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating transaction");
-                return BadRequest(new { message = "An error occurred while creating transaction" });
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Failed to create transaction"
+                });
             }
         }
 
-        /// <summary>
-        /// Update transaction
-        /// </summary>
+        // ============================
+        // UPDATE Transaction
+        // ============================
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(TransactionDto), 200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<TransactionDto>> UpdateTransaction(int id, UpdateTransactionDto transactionDto)
+        public async Task<IActionResult> UpdateTransaction(int id, UpdateTransactionDto dto)
         {
             try
             {
-                var transaction = await _transactionService.UpdateTransactionAsync(id, transactionDto);
-                if (transaction == null)
-                    return NotFound(new { message = "Transaction not found" });
+                int currentUserId = GetCurrentUserId();
 
-                return Ok(transaction);
+                var transaction = await _transactionService.GetTransactionByIdAsync(id);
+                if (transaction == null)
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Transaction not found"
+                    });
+
+                if (!IsAdmin && transaction.UserId != currentUserId)
+                    return Forbid();
+
+                var updated = await _transactionService.UpdateTransactionAsync(id, dto, currentUserId);
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Transaction updated successfully",
+                    Data = updated
+                });
             }
-            catch (ArgumentException ex)
+            catch (UnauthorizedAccessException)
             {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating transaction {TransactionId}", id);
-                return BadRequest(new { message = "An error occurred while updating transaction" });
+                return UnauthorizedResponse();
             }
         }
 
-        /// <summary>
-        /// Delete transaction
-        /// </summary>
+        // ============================
+        // DELETE Transaction
+        // ============================
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
-            var result = await _transactionService.DeleteTransactionAsync(id);
-            if (!result)
-                return NotFound(new { message = "Transaction not found" });
+            try
+            {
+                int currentUserId = GetCurrentUserId();
 
-            return NoContent();
+                var transaction = await _transactionService.GetTransactionByIdAsync(id);
+                if (transaction == null)
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Transaction not found"
+                    });
+
+                if (!IsAdmin && transaction.UserId != currentUserId)
+                    return Forbid();
+
+                await _transactionService.DeleteTransactionAsync(id, currentUserId);
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Transaction deleted successfully"
+                });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedResponse();
+            }
         }
 
-        /// <summary>
-        /// Update transaction status
-        /// </summary>
-        [HttpPatch("{id}/status")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateTransactionStatus(int id, [FromBody] UpdateTransactionStatusDto statusDto)
+        // ============================
+        // MY Transactions
+        // ============================
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyTransactions()
         {
-            var result = await _transactionService.UpdateTransactionStatusAsync(id, statusDto.Status);
-            if (!result)
-                return NotFound(new { message = "Transaction not found" });
+            try
+            {
+                int currentUserId = GetCurrentUserId();
 
-            return Ok(new { message = "Transaction status updated successfully" });
-        }
+                var transactions = await _transactionService.GetTransactionsByUserAsync(currentUserId);
 
-        /// <summary>
-        /// Get transactions by user
-        /// </summary>
-        [HttpGet("user/{userId}")]
-        [Authorize(Roles = "Admin,Manager,Finance,User")]
-        [ProducesResponseType(typeof(IEnumerable<TransactionDto>), 200)]
-        public async Task<ActionResult<IEnumerable<TransactionDto>>> GetTransactionsByUser(int userId)
-        {
-            var transactions = await _transactionService.GetTransactionsByUserAsync(userId);
-            return Ok(transactions);
-        }
-
-        /// <summary>
-        /// Get transactions by consultation
-        /// </summary>
-        [HttpGet("consultation/{consultationId}")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(IEnumerable<TransactionDto>), 200)]
-        public async Task<ActionResult<IEnumerable<TransactionDto>>> GetTransactionsByConsultation(int consultationId)
-        {
-            var transactions = await _transactionService.GetTransactionsByConsultationAsync(consultationId);
-            return Ok(transactions);
-        }
-
-        /// <summary>
-        /// Get transactions by date range
-        /// </summary>
-        [HttpGet("date-range")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(IEnumerable<TransactionDto>), 200)]
-        public async Task<ActionResult<IEnumerable<TransactionDto>>> GetTransactionsByDateRange(
-            [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-        {
-            var transactions = await _transactionService.GetTransactionsByDateRangeAsync(startDate, endDate);
-            return Ok(transactions);
-        }
-
-        /// <summary>
-        /// Get transaction statistics
-        /// </summary>
-        [HttpGet("stats")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(TransactionStatsDto), 200)]
-        public async Task<ActionResult<TransactionStatsDto>> GetTransactionStats()
-        {
-            var stats = await _transactionService.GetTransactionStatsAsync();
-            return Ok(stats);
-        }
-
-        /// <summary>
-        /// Get financial summary
-        /// </summary>
-        [HttpGet("financial-summary")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(FinancialSummaryDto), 200)]
-        public async Task<ActionResult<FinancialSummaryDto>> GetFinancialSummary()
-        {
-            var summary = await _transactionService.GetFinancialSummaryAsync();
-            return Ok(summary);
-        }
-
-        /// <summary>
-        /// Get total revenue
-        /// </summary>
-        [HttpGet("total-revenue")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(decimal), 200)]
-        public async Task<ActionResult<decimal>> GetTotalRevenue(
-            [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null)
-        {
-            var revenue = await _transactionService.GetTotalRevenueAsync(startDate, endDate);
-            return Ok(revenue);
-        }
-
-        /// <summary>
-        /// Get pending transactions
-        /// </summary>
-        [HttpGet("pending")]
-        [Authorize(Roles = "Admin,Manager,Finance")]
-        [ProducesResponseType(typeof(IEnumerable<TransactionDto>), 200)]
-        public async Task<ActionResult<IEnumerable<TransactionDto>>> GetPendingTransactions()
-        {
-            var transactions = await _transactionService.GetPendingTransactionsAsync();
-            return Ok(transactions);
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Your transactions retrieved successfully",
+                    Data = transactions
+                });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedResponse();
+            }
         }
     }
 }

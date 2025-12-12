@@ -2,8 +2,9 @@
 using AutoMapper;
 using HealthAidAPI.Data;
 using HealthAidAPI.DTOs;
-using HealthAidAPI.DTOs.Rating;
+using HealthAidAPI.DTOs.Ratings;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -99,14 +100,8 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<RatingDto>
-                {
-                    Items = ratings,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                // تمرير القيم عبر الـ Constructor
+                return new PagedResult<RatingDto>(ratings, totalCount);
             }
             catch (Exception ex)
             {
@@ -190,21 +185,20 @@ namespace HealthAidAPI.Services.Implementations
             };
         }
 
-        public async Task<RatingDto?> UpdateRatingAsync(int id, UpdateRatingDto updateRatingDto)
+        public async Task<RatingDto?> UpdateRatingAsync(int id, UpdateRatingDto dto, int userId)
         {
             var rating = await _context.Ratings
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.RatingId == id);
 
-            if (rating == null) return null;
+            if (rating == null || rating.UserId != userId)
+                return null;
 
-            rating.Value = updateRatingDto.Value;
-            rating.Comment = updateRatingDto.Comment ?? rating.Comment;
+            rating.Value = dto.Value;
+            rating.Comment = dto.Comment ?? rating.Comment;
             rating.Date = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Rating {RatingId} updated", id);
 
             return new RatingDto
             {
@@ -221,15 +215,16 @@ namespace HealthAidAPI.Services.Implementations
             };
         }
 
-        public async Task<bool> DeleteRatingAsync(int id)
+        public async Task<bool> DeleteRatingAsync(int id, int userId)
         {
             var rating = await _context.Ratings.FindAsync(id);
-            if (rating == null) return false;
+
+            if (rating == null || rating.UserId != userId)
+                return false;
 
             _context.Ratings.Remove(rating);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Rating {RatingId} deleted", id);
             return true;
         }
 
@@ -394,5 +389,7 @@ namespace HealthAidAPI.Services.Implementations
                 _ => $"{targetType} #{targetId}"
             };
         }
+
+       
     }
 }

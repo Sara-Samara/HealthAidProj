@@ -1,6 +1,7 @@
 ﻿// Services/Interfaces/ISponsorshipService.cs
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Sponsorships;
+using HealthAidAPI.Helpers;
+
 
 namespace HealthAidAPI.Services.Interfaces
 {

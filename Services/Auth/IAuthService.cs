@@ -1,5 +1,5 @@
 ﻿// Services/Interfaces/IAuthService.cs
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Auth;
 
 namespace HealthAidAPI.Services.Interfaces
 {

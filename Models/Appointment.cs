@@ -26,7 +26,7 @@ namespace HealthAidAPI.Models
         [Display(Name = "Appointment Note")]
         public string? Note { get; set; }
 
-        // تغيير من int? إلى int
+    
         [Required(ErrorMessage = "Doctor ID is required.")]
         [ForeignKey("Doctor")]
         [Display(Name = "Doctor ID")]
@@ -34,7 +34,6 @@ namespace HealthAidAPI.Models
 
         public virtual Doctor? Doctor { get; set; }
 
-        // تغيير من int? إلى int
         [Required(ErrorMessage = "Patient ID is required.")]
         [ForeignKey("Patient")]
         [Display(Name = "Patient ID")]

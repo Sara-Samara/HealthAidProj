@@ -1,11 +1,13 @@
 ﻿// Services/Implementations/AppointmentService.cs
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
-using HealthAidAPI.Services.Interfaces;
+using HealthAidAPI.DTOs.Appointments;
+using HealthAidAPI.DTOs.PublicAlerts;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Models;
+using HealthAidAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -100,15 +102,8 @@ namespace HealthAidAPI.Services.Implementations
                         CreatedAt = a.AppointmentDate
                     })
                     .ToListAsync();
+                return new PagedResult<AppointmentDto>(appointments, totalCount);
 
-                return new PagedResult<AppointmentDto>
-                {
-                    Items = appointments,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
             }
             catch (Exception ex)
             {

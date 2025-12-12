@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Messages;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -31,7 +32,13 @@ namespace HealthAidAPI.Services.Implementations
                     .Include(m => m.Receiver)
                     .AsQueryable();
 
-                // Apply filters
+                if (!string.IsNullOrEmpty(filter.CurrentUserName))
+                {
+                    query = query.Where(m =>
+                        m.Sender.FirstName == filter.CurrentUserName ||
+                        m.Receiver.FirstName == filter.CurrentUserName);
+                }
+
                 if (!string.IsNullOrEmpty(filter.Search))
                 {
                     query = query.Where(m => m.Content.Contains(filter.Search));
@@ -93,14 +100,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<MessageDto>
-                {
-                    Items = messages,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<MessageDto>(messages, totalCount);
             }
             catch (Exception ex)
             {
@@ -252,21 +252,13 @@ namespace HealthAidAPI.Services.Implementations
             return messages;
         }
 
-        public async Task<bool> MarkMessagesAsReadAsync(MarkAsReadDto markAsReadDto)
+        public async Task<bool> MarkMessagesAsReadAsync(MarkAsReadDto dto)
         {
-            var sender = await _context.Users
-                .FirstOrDefaultAsync(u => u.FirstName == markAsReadDto.SenderName);
-
-            var receiver = await _context.Users
-                .FirstOrDefaultAsync(u => u.FirstName == markAsReadDto.ReceiverName);
-
-            if (sender == null || receiver == null)
-                return false;
-
             var unreadMessages = await _context.Messages
-                .Where(m => m.SenderId == sender.Id &&
-                           m.ReceiverId == receiver.Id &&
-                           m.IsRead == false)
+                .Where(m =>
+                    m.ReceiverId == dto.MyId &&
+                    m.SenderId == dto.OtherUserId &&
+                    !m.IsRead)
                 .ToListAsync();
 
             if (!unreadMessages.Any())
@@ -278,12 +270,9 @@ namespace HealthAidAPI.Services.Implementations
             }
 
             await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Marked {Count} messages as read from {Sender} to {Receiver}",
-                unreadMessages.Count, markAsReadDto.SenderName, markAsReadDto.ReceiverName);
-
             return true;
         }
+
 
         public async Task<int> GetUnreadCountAsync(string receiverName)
         {

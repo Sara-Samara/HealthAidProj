@@ -1,11 +1,12 @@
 ﻿// Services/Implementations/NotificationService.cs
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using HealthAidAPI.Data;
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Notifications;
 using HealthAidAPI.Services.Interfaces;
 using HealthAidAPI.Models;
+using HealthAidAPI.Helpers;
+
 
 namespace HealthAidAPI.Services.Implementations
 {
@@ -103,14 +104,7 @@ namespace HealthAidAPI.Services.Implementations
                     })
                     .ToListAsync();
 
-                return new PagedResult<NotificationDto>
-                {
-                    Items = notifications,
-                    TotalCount = totalCount,
-                    Page = filter.Page,
-                    PageSize = filter.PageSize,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
-                };
+                return new PagedResult<NotificationDto>(notifications, totalCount);
             }
             catch (Exception ex)
             {

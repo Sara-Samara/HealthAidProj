@@ -1,5 +1,5 @@
 ﻿// Controllers/AuthController.cs
-using HealthAidAPI.DTOs;
+using HealthAidAPI.DTOs.Auth;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +20,19 @@ namespace HealthAidAPI.Controllers
             _logger = logger;
         }
 
+        // 🔐 Unified method to extract UserId from JWT
+        private int CurrentUserId =>
+            int.TryParse(
+                User.FindFirst("id")?.Value
+                ?? User.FindFirst("nameid")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? User.FindFirst("sub")?.Value,
+                out var id)
+            ? id : 0;
+
+        // ============================
+        // LOGIN
+        // ============================
         [HttpPost("login")]
         public async Task<ActionResult<AuthResponse>> Login(LoginDto loginDto)
         {
@@ -39,6 +52,9 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // REGISTER
+        // ============================
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponse>> Register(RegisterDto registerDto)
         {
@@ -58,6 +74,9 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // REFRESH TOKEN
+        // ============================
         [HttpPost("refresh-token")]
         public async Task<ActionResult<AuthResponse>> RefreshToken(RefreshTokenDto refreshTokenDto)
         {
@@ -77,19 +96,24 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // CHANGE PASSWORD (Requires Login)
+        // ============================
         [HttpPost("change-password")]
         public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
         {
             try
             {
-                // الحصول على ID المستخدم من التوكن
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+                var userId = CurrentUserId;
+
+                if (userId == 0)
+                    return Unauthorized(new { message = "You must be logged in to change password" });
+
                 var result = await _authService.ChangePasswordAsync(userId, changePasswordDto);
 
-                if (result)
-                    return Ok(new { message = "Password changed successfully" });
-                else
-                    return BadRequest(new { message = "Failed to change password" });
+                return result
+                    ? Ok(new { message = "Password changed successfully" })
+                    : BadRequest(new { message = "Failed to change password" });
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -106,12 +130,15 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // FORGOT PASSWORD
+        // ============================
         [HttpPost("forgot-password")]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             try
             {
-                var result = await _authService.ForgotPasswordAsync(forgotPasswordDto);
+                await _authService.ForgotPasswordAsync(forgotPasswordDto);
                 return Ok(new { message = "If the email exists, a password reset link has been sent" });
             }
             catch (Exception ex)
@@ -121,12 +148,15 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // RESET PASSWORD
+        // ============================
         [HttpPost("reset-password")]
         public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             try
             {
-                var result = await _authService.ResetPasswordAsync(resetPasswordDto);
+                await _authService.ResetPasswordAsync(resetPasswordDto);
                 return Ok(new { message = "Password reset successfully" });
             }
             catch (ArgumentException ex)
@@ -140,12 +170,15 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // VERIFY EMAIL
+        // ============================
         [HttpPost("verify-email")]
         public async Task<ActionResult> VerifyEmail(VerifyEmailDto verifyEmailDto)
         {
             try
             {
-                var result = await _authService.VerifyEmailAsync(verifyEmailDto);
+                await _authService.VerifyEmailAsync(verifyEmailDto);
                 return Ok(new { message = "Email verified successfully" });
             }
             catch (ArgumentException ex)
@@ -159,18 +192,24 @@ namespace HealthAidAPI.Controllers
             }
         }
 
+        // ============================
+        // LOGOUT (Requires Login)
+        // ============================
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+                var userId = CurrentUserId;
+
+                if (userId == 0)
+                    return Unauthorized(new { message = "You must be logged in to logout" });
+
                 var result = await _authService.LogoutAsync(userId);
 
-                if (result)
-                    return Ok(new { message = "Logged out successfully" });
-                else
-                    return BadRequest(new { message = "Failed to logout" });
+                return result
+                    ? Ok(new { message = "Logged out successfully" })
+                    : BadRequest(new { message = "Failed to logout" });
             }
             catch (Exception ex)
             {

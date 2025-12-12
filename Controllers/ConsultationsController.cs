@@ -1,5 +1,6 @@
 ﻿using HealthAidAPI.DTOs;
-using HealthAidAPI.Models;
+using HealthAidAPI.DTOs.Consultations;
+using HealthAidAPI.Helpers;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,16 @@ namespace HealthAidAPI.Controllers
         }
 
         /// <summary>
-        /// Get all consultations with filtering and pagination
+        /// Get all consultations with filtering (Doctor, Patient, Date, Status, Search) and pagination
         /// </summary>
+        /// <remarks>
+        /// Use this endpoint for all filtering needs:
+        /// - By Doctor: GET /api/Consultations?doctorId=5
+        /// - By Patient: GET /api/Consultations?patientId=10
+        /// - By Date: GET /api/Consultations?startDate=2023-01-01&endDate=2023-01-31
+        /// </remarks>
         [HttpGet]
-        [Authorize(Roles = "Admin,Manager,Doctor")]
+        [Authorize(Roles = "Admin,Manager,Doctor,Patient")]
         [ProducesResponseType(typeof(PagedResult<ConsultationDto>), 200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<PagedResult<ConsultationDto>>> GetConsultations([FromQuery] ConsultationFilterDto filter)
@@ -155,43 +162,6 @@ namespace HealthAidAPI.Controllers
                 return NotFound(new { message = "Consultation not found" });
 
             return Ok(new { message = "Consultation status updated successfully" });
-        }
-
-        /// <summary>
-        /// Get consultations by doctor
-        /// </summary>
-        [HttpGet("doctor/{doctorId}")]
-        [Authorize(Roles = "Admin,Manager,Doctor")]
-        [ProducesResponseType(typeof(IEnumerable<ConsultationDto>), 200)]
-        public async Task<ActionResult<IEnumerable<ConsultationDto>>> GetConsultationsByDoctor(int doctorId)
-        {
-            var consultations = await _consultationService.GetConsultationsByDoctorAsync(doctorId);
-            return Ok(consultations);
-        }
-
-        /// <summary>
-        /// Get consultations by patient
-        /// </summary>
-        [HttpGet("patient/{patientId}")]
-        [Authorize(Roles = "Admin,Manager,Doctor,Patient")]
-        [ProducesResponseType(typeof(IEnumerable<ConsultationDto>), 200)]
-        public async Task<ActionResult<IEnumerable<ConsultationDto>>> GetConsultationsByPatient(int patientId)
-        {
-            var consultations = await _consultationService.GetConsultationsByPatientAsync(patientId);
-            return Ok(consultations);
-        }
-
-        /// <summary>
-        /// Get consultations by date range
-        /// </summary>
-        [HttpGet("date-range")]
-        [Authorize(Roles = "Admin,Manager,Doctor")]
-        [ProducesResponseType(typeof(IEnumerable<ConsultationDto>), 200)]
-        public async Task<ActionResult<IEnumerable<ConsultationDto>>> GetConsultationsByDateRange(
-            [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-        {
-            var consultations = await _consultationService.GetConsultationsByDateRangeAsync(startDate, endDate);
-            return Ok(consultations);
         }
 
         /// <summary>

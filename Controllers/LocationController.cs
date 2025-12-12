@@ -1,35 +1,67 @@
-﻿using HealthAidAPI.Data;
-using HealthAidAPI.Models;
-using HealthAidAPI.Models.Emergency;
-using HealthAidAPI.Models.Location;
-using HealthAidAPI.Models.MedicalFacilities;
+﻿using HealthAidAPI.DTOs.Locations;
+using HealthAidAPI.Helpers;
+using HealthAidAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace HealthAidAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class LocationController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ILocationService _locationService;
         private readonly ILogger<LocationController> _logger;
 
-        public LocationController(ApplicationDbContext context, ILogger<LocationController> logger)
+        public LocationController(
+            ILocationService locationService,
+            ILogger<LocationController> logger)
         {
-            _context = context;
+            _locationService = locationService;
             _logger = logger;
         }
 
-        // POST: api/location/update
+        // ============================
+        // 🔐 Auth Helper (موحّد)
+        // ============================
+        private int GetCurrentUserId()
+        {
+            var claim =
+                User.FindFirst("id") ??
+                User.FindFirst(ClaimTypes.NameIdentifier) ??
+                User.FindFirst("nameid") ??
+                User.FindFirst("sub");
+
+            if (claim == null)
+                throw new UnauthorizedAccessException("User not logged in");
+
+            if (!int.TryParse(claim.Value, out int userId))
+                throw new UnauthorizedAccessException("Invalid user id in token");
+
+            return userId;
+        }
+
+        private IActionResult UnauthorizedUser() =>
+            Unauthorized(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "You must be logged in to perform this action."
+            });
+
+        // =========================================================
+        // 📌 Update User Location (Current User Only)
+        // =========================================================
         [HttpPost("update")]
-        public async Task<ActionResult<ApiResponse<UserLocation>>> UpdateUserLocation(UpdateLocationRequest request)
+        public async Task<IActionResult> UpdateUserLocation(UpdateUserLocationDto request)
         {
             try
             {
-                var location = new UserLocation
+                int currentUserId = GetCurrentUserId();
+
+                var internalRequest = new UpdateUserLocationDto
                 {
-                    UserId = request.UserId,
+                    UserId = currentUserId, // 👈 من التوكن فقط
                     Latitude = request.Latitude,
                     Longitude = request.Longitude,
                     Address = request.Address,
@@ -37,24 +69,26 @@ namespace HealthAidAPI.Controllers
                     Region = request.Region,
                     Accuracy = request.Accuracy,
                     LocationType = request.LocationType,
-                    IsPrimary = request.IsPrimary,
-                    CreatedAt = DateTime.UtcNow
+                    IsPrimary = request.IsPrimary
                 };
 
-                _context.UserLocations.Add(location);
-                await _context.SaveChangesAsync();
+                var location = await _locationService.UpdateUserLocationAsync(internalRequest);
 
-                return Ok(new ApiResponse<UserLocation>
+                return Ok(new ApiResponse<UserLocationDto>
                 {
                     Success = true,
                     Message = "Location updated successfully",
                     Data = location
                 });
             }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating user location");
-                return StatusCode(500, new ApiResponse<string>
+                return StatusCode(500, new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Internal server error"
@@ -62,28 +96,33 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // GET: api/location/user/5
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<ApiResponse<List<UserLocation>>>> GetUserLocations(int userId)
+        // =========================================================
+        // 📌 Get Locations for Current User
+        // =========================================================
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserLocations()
         {
             try
             {
-                var locations = await _context.UserLocations
-                    .Where(ul => ul.UserId == userId)
-                    .OrderByDescending(ul => ul.CreatedAt)
-                    .ToListAsync();
+                int currentUserId = GetCurrentUserId();
 
-                return Ok(new ApiResponse<List<UserLocation>>
+                var locations = await _locationService.GetUserLocationsAsync(currentUserId);
+
+                return Ok(new ApiResponse<List<UserLocationDto>>
                 {
                     Success = true,
                     Message = "User locations retrieved successfully",
                     Data = locations
                 });
             }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving user locations for user {UserId}", userId);
-                return StatusCode(500, new ApiResponse<string>
+                _logger.LogError(ex, "Error retrieving user locations");
+                return StatusCode(500, new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Internal server error"
@@ -91,43 +130,37 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // GET: api/location/emergency-services
+        // =========================================================
+        // 📌 Get Emergency Services Near Location
+        // =========================================================
         [HttpGet("emergency-services")]
-        public async Task<ActionResult<ApiResponse<EmergencyServicesResponse>>> GetEmergencyServices(
+        public async Task<IActionResult> GetEmergencyServices(
             [FromQuery] decimal latitude,
             [FromQuery] decimal longitude,
             [FromQuery] decimal radius = 5.00m)
         {
             try
             {
-                var hospitals = await _context.MedicalFacilities
-                    .Where(f => f.Type == "Hospital" && f.IsActive && f.Verified)
-                    .Take(10)
-                    .ToListAsync();
+                GetCurrentUserId(); // فقط تحقق تسجيل الدخول
 
-                var responders = await _context.EmergencyResponders
-                    .Where(r => r.IsAvailable)
-                    .Include(r => r.User)
-                    .Take(10)
-                    .ToListAsync();
+                var response =
+                    await _locationService.GetEmergencyServicesAsync(latitude, longitude, radius);
 
-                var response = new EmergencyServicesResponse
-                {
-                    Hospitals = hospitals,
-                    EmergencyResponders = responders
-                };
-
-                return Ok(new ApiResponse<EmergencyServicesResponse>
+                return Ok(new ApiResponse<EmergencyServicesResponseDto>
                 {
                     Success = true,
                     Message = "Emergency services retrieved successfully",
                     Data = response
                 });
             }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving emergency services");
-                return StatusCode(500, new ApiResponse<string>
+                return StatusCode(500, new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Internal server error"
@@ -135,27 +168,33 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // GET: api/location/service-areas
+        // =========================================================
+        // 📌 Get Service Areas (Any Logged User)
+        // =========================================================
         [HttpGet("service-areas")]
-        public async Task<ActionResult<ApiResponse<List<ServiceArea>>>> GetServiceAreas()
+        public async Task<IActionResult> GetServiceAreas()
         {
             try
             {
-                var areas = await _context.ServiceAreas
-                    .Where(sa => sa.IsActive)
-                    .ToListAsync();
+                GetCurrentUserId(); // تحقق تسجيل الدخول فقط
 
-                return Ok(new ApiResponse<List<ServiceArea>>
+                var areas = await _locationService.GetServiceAreasAsync();
+
+                return Ok(new ApiResponse<List<ServiceAreaDto>>
                 {
                     Success = true,
                     Message = "Service areas retrieved successfully",
                     Data = areas
                 });
             }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving service areas");
-                return StatusCode(500, new ApiResponse<string>
+                return StatusCode(500, new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Internal server error"
@@ -163,75 +202,38 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // POST: api/location/service-areas
+        // =========================================================
+        // 📌 Create Service Area (Admin / Auth only)
+        // =========================================================
         [HttpPost("service-areas")]
-        public async Task<ActionResult<ApiResponse<ServiceArea>>> CreateServiceArea(ServiceAreaRequest request)
+        public async Task<IActionResult> CreateServiceArea(CreateServiceAreaDto request)
         {
             try
             {
-                var area = new ServiceArea
+                GetCurrentUserId(); 
+
+                var area = await _locationService.CreateServiceAreaAsync(request);
+
+                return Ok(new ApiResponse<ServiceAreaDto>
                 {
-                    AreaName = request.AreaName,
-                    City = request.City,
-                    Region = request.Region,
-                    Latitude = request.Latitude,
-                    Longitude = request.Longitude,
-                    Radius = request.Radius,
-                    Description = request.Description,
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _context.ServiceAreas.Add(area);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetServiceAreas),
-                    new ApiResponse<ServiceArea>
-                    {
-                        Success = true,
-                        Message = "Service area created successfully",
-                        Data = area
-                    });
+                    Success = true,
+                    Message = "Service area created successfully",
+                    Data = area
+                });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return UnauthorizedUser();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating service area");
-                return StatusCode(500, new ApiResponse<string>
+                return StatusCode(500, new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Internal server error"
                 });
             }
         }
-    }
-
-    public class UpdateLocationRequest
-    {
-        public int UserId { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
-        public string Address { get; set; } = string.Empty;
-        public string? City { get; set; }
-        public string? Region { get; set; }
-        public decimal? Accuracy { get; set; }
-        public string LocationType { get; set; } = "Current";
-        public bool IsPrimary { get; set; } = false;
-    }
-
-    public class EmergencyServicesResponse
-    {
-        public List<MedicalFacility> Hospitals { get; set; } = new();
-        public List<EmergencyResponder> EmergencyResponders { get; set; } = new();
-    }
-
-    public class ServiceAreaRequest
-    {
-        public required string AreaName { get; set; }
-        public string? City { get; set; }
-        public string? Region { get; set; }
-        public decimal? Latitude { get; set; }
-        public decimal? Longitude { get; set; }
-        public decimal Radius { get; set; } = 10.00m;
-        public string Description { get; set; } = string.Empty;
     }
 }
