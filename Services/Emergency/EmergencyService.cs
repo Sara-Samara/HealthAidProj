@@ -1,21 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AutoMapper; // يفضل استخدام AutoMapper
+﻿using AutoMapper; // يفضل استخدام AutoMapper
 using HealthAidAPI.Data;
-using HealthAidAPI.Models.Emergency;
 using HealthAidAPI.DTOs.Emergency;
-using HealthAidAPI.Services.Interfaces;
+using HealthAidAPI.Models.Emergency;
+using Microsoft.AspNetCore.SignalR;
+using HealthAidAPI.Hubs;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthAidAPI.Services.Implementations
 {
     public class EmergencyService : IEmergencyService
     {
         private readonly ApplicationDbContext _context;
-        // private readonly IMapper _mapper; // يفضل حقن الـ Mapper هنا
+        private readonly IHubContext<HealthAidHub> _hubContext;
 
-        public EmergencyService(ApplicationDbContext context)
+        public EmergencyService(ApplicationDbContext context , IHubContext<HealthAidHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext; 
         }
+
 
         public async Task<List<EmergencyCaseDto>> GetEmergencyCasesAsync(string? status)
         {
@@ -58,7 +61,14 @@ namespace HealthAidAPI.Services.Implementations
             _context.EmergencyCases.Add(emergencyCase);
             await _context.SaveChangesAsync();
 
-            // إضافة اللوج
+            await _hubContext.Clients.All.SendAsync("ReceiveEmergencyAlert", new
+            {
+                CaseId = emergencyCase.Id,
+                Type = emergencyCase.EmergencyType,
+                Location = emergencyCase.Location,
+                Time = DateTime.UtcNow
+            });
+
             var log = new EmergencyLog
             {
                 EmergencyCaseId = emergencyCase.Id,

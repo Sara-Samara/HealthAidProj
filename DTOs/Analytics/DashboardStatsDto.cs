@@ -1,4 +1,4 @@
-﻿using HealthAidAPI.DTOs.Donations; // افترضنا أن لديك DonationDto
+﻿using HealthAidAPI.DTOs.Donations;
 
 namespace HealthAidAPI.DTOs.Analytics
 {
