@@ -11,7 +11,8 @@ namespace HealthAidAPI.Services.Interfaces
 
         // secured versions (owner-only)
         Task<RatingDto?> UpdateRatingAsync(int id, UpdateRatingDto updateRatingDto, int userId);
-        Task<bool> DeleteRatingAsync(int id, int userId);
+        Task<bool> DeleteRatingAsync(int ratingId, int userId, bool isAdmin);
+
 
         Task<bool> DeleteRatingsByUserAsync(int userId);
 

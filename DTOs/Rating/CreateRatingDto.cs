@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HealthAidAPI.DTOs.Messages;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HealthAidAPI.DTOs.Ratings
 {
@@ -20,8 +22,7 @@ namespace HealthAidAPI.DTOs.Ratings
         [StringLength(500, ErrorMessage = "Comment cannot exceed 500 characters")]
         public string? Comment { get; set; }
 
-        [Required(ErrorMessage = "User ID is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "User ID must be a positive number")]
+        [JsonIgnore]
         public int UserId { get; set; }
     }
 }

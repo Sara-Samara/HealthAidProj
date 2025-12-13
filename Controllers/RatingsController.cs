@@ -16,133 +16,77 @@ namespace HealthAidAPI.Controllers
         private readonly IRatingService _ratingService;
         private readonly ILogger<RatingsController> _logger;
 
-        public RatingsController(IRatingService ratingService, ILogger<RatingsController> logger)
+        public RatingsController(
+            IRatingService ratingService,
+            ILogger<RatingsController> logger)
         {
             _ratingService = ratingService;
             _logger = logger;
         }
 
-        private int CurrentUserId =>
-            int.TryParse(
-                User.FindFirst("id")?.Value ??
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
-                User.FindFirst("nameid")?.Value,
-                out var id)
-            ? id
-            : -1;
+        // ============================
+        // 🔐 Auth Helpers (مثل ما طلبتي)
+        // ============================
+        private int GetCurrentUserId()
+        {
+            var claim =
+                User.FindFirst("id") ??
+                User.FindFirst(ClaimTypes.NameIdentifier) ??
+                User.FindFirst("nameid");
 
-        private ActionResult UnauthorizedResponse<T>() =>
-            Unauthorized(new ApiResponse<T>
+            if (claim == null || !int.TryParse(claim.Value, out int userId))
+                throw new UnauthorizedAccessException("User not logged in");
+
+            return userId;
+        }
+
+        private bool IsAdmin =>
+            User.IsInRole("Admin") ||
+            User.IsInRole("Manager") ||
+            User.IsInRole("Finance");
+
+        private IActionResult UnauthorizedResponse(string msg = "You must be logged in.")
+            => Unauthorized(new ApiResponse<object>
             {
                 Success = false,
-                Message = "You must be logged in to perform this action."
+                Message = msg
             });
 
-        // ===============================
-        // Public: Get all ratings
-        // ===============================
+      
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<PagedResult<RatingDto>>>> GetRatings([FromQuery] RatingFilterDto filter)
+        
+        public async Task<IActionResult> GetRatings([FromQuery] RatingFilterDto filter)
         {
-            var result = await _ratingService.GetAllRatingsAsync(filter);
-
-            return Ok(new ApiResponse<PagedResult<RatingDto>>
+            try
             {
-                Success = true,
-                Message = "Ratings retrieved successfully",
-                Data = result
-            });
-        }
+                int currentUserId = GetCurrentUserId();
 
-        // ===============================
-        // Create Rating (Owner)
-        // ===============================
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<ApiResponse<RatingDto>>> CreateRating(CreateRatingDto dto)
-        {
-            if (CurrentUserId == -1)
-                return UnauthorizedResponse<RatingDto>();
+          
+                if (!IsAdmin)
+                    filter.UserId = currentUserId;
 
-            dto.UserId = CurrentUserId; // overwrite client input
+                var result = await _ratingService.GetAllRatingsAsync(filter);
 
-            var rating = await _ratingService.CreateRatingAsync(dto);
-
-            return CreatedAtAction(nameof(GetRating), new { id = rating.RatingId },
-                new ApiResponse<RatingDto>
+                return Ok(new ApiResponse<PagedResult<RatingDto>>
                 {
                     Success = true,
-                    Message = "Rating created successfully",
-                    Data = rating
-                });
-        }
-
-        // ===============================
-        // Update Rating (Owner only)
-        // ===============================
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<ActionResult<ApiResponse<RatingDto>>> UpdateRating(int id, UpdateRatingDto dto)
-        {
-            if (CurrentUserId == -1)
-                return UnauthorizedResponse<RatingDto>();
-
-            var updated = await _ratingService.UpdateRatingAsync(id, dto, CurrentUserId);
-
-            if (updated == null)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Rating not found or you do not have permission to update it"
+                    Message = "Ratings retrieved successfully",
+                    Data = result
                 });
             }
-
-            return Ok(new ApiResponse<RatingDto>
+            catch (UnauthorizedAccessException ex)
             {
-                Success = true,
-                Message = "Rating updated successfully",
-                Data = updated
-            });
-        }
-
-        // ===============================
-        // Delete Rating (Owner only)
-        // ===============================
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<ActionResult<ApiResponse<object>>> DeleteRating(int id)
-        {
-            if (CurrentUserId == -1)
-                return UnauthorizedResponse<object>();
-
-            var deleted = await _ratingService.DeleteRatingAsync(id, CurrentUserId);
-
-            if (!deleted)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Rating not found or you do not have permission to delete it"
-                });
+                return UnauthorizedResponse(ex.Message);
             }
-
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "Rating deleted successfully"
-            });
         }
 
-        // ===============================
-        // Public: Get Rating by ID
-        // ===============================
+      
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<RatingDto>>> GetRating(int id)
+        public async Task<IActionResult> GetRating(int id)
         {
             var rating = await _ratingService.GetRatingByIdAsync(id);
+
             if (rating == null)
             {
                 return NotFound(new ApiResponse<object>
@@ -160,12 +104,109 @@ namespace HealthAidAPI.Controllers
             });
         }
 
-        // ===============================
-        // Public: Get Ratings by target
-        // ===============================
+
+        [HttpPost]
+        
+        public async Task<IActionResult> CreateRating(CreateRatingDto dto)
+        {
+            try
+            {
+                int currentUserId = GetCurrentUserId();
+
+                dto.UserId = currentUserId;
+
+                var rating = await _ratingService.CreateRatingAsync(dto);
+
+                return CreatedAtAction(nameof(GetRating),
+                    new { id = rating.RatingId },
+                    new ApiResponse<RatingDto>
+                    {
+                        Success = true,
+                        Message = "Rating created successfully",
+                        Data = rating
+                    });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return UnauthorizedResponse();
+            }
+        }
+
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateRating(int id, UpdateRatingDto dto)
+        {
+            try
+            {
+                int currentUserId = GetCurrentUserId();
+
+                var updated = await _ratingService.UpdateRatingAsync(id, dto, currentUserId);
+
+                if (updated == null)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Rating not found or insufficient permissions"
+                    });
+                }
+
+                return Ok(new ApiResponse<RatingDto>
+                {
+                    Success = true,
+                    Message = "Rating updated successfully",
+                    Data = updated
+                });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return UnauthorizedResponse(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteRating(int id)
+        {
+            try
+            {
+                int currentUserId = GetCurrentUserId();
+
+                var deleted = await _ratingService.DeleteRatingAsync(
+                    id,
+                    currentUserId,
+                    IsAdmin
+                );
+
+                if (!deleted)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Rating not found or insufficient permissions"
+                    });
+                }
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Rating deleted successfully"
+                });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return UnauthorizedResponse(ex.Message);
+            }
+        }
+
+        // ============================
+        // GET Ratings by Target (Public)
+        // ============================
         [HttpGet("target/{targetType}/{targetId}")]
         [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<IEnumerable<RatingDto>>>> GetRatingsByTarget(string targetType, int targetId)
+        public async Task<IActionResult> GetRatingsByTarget(string targetType, int targetId)
         {
             var ratings = await _ratingService.GetRatingsByTargetAsync(targetType, targetId);
 
@@ -177,12 +218,12 @@ namespace HealthAidAPI.Controllers
             });
         }
 
-        // ===============================
-        // Public: Average rating
-        // ===============================
+        // ============================
+        // GET Average Rating (Public)
+        // ============================
         [HttpGet("average/{targetType}/{targetId}")]
         [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<AverageRatingDto>>> GetAverageRating(string targetType, int targetId)
+        public async Task<IActionResult> GetAverageRating(string targetType, int targetId)
         {
             var avg = await _ratingService.GetAverageRatingAsync(targetType, targetId);
 
@@ -194,12 +235,12 @@ namespace HealthAidAPI.Controllers
             });
         }
 
-        // ===============================
-        // Public: Recent ratings
-        // ===============================
+        // ============================
+        // GET Recent Ratings (Public)
+        // ============================
         [HttpGet("recent")]
         [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse<IEnumerable<RatingDto>>>> GetRecentRatings([FromQuery] int count = 10)
+        public async Task<IActionResult> GetRecentRatings([FromQuery] int count = 10)
         {
             var ratings = await _ratingService.GetRecentRatingsAsync(count);
 

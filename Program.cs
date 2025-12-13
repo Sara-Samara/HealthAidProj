@@ -40,6 +40,7 @@ builder.Services.AddScoped<ISponsorshipService, SponsorshipService>();
 builder.Services.AddScoped<IMedicineRequestService, MedicineRequestService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IPublicAlertService, PublicAlertService>();
+builder.Services.AddScoped<ISyncService, SyncService>();
 // Register External API Service
 builder.Services.AddHttpClient<IExternalMedicalService, ExternalMedicalService>();
 // +++ الخدمات الجديدة التي أضفناها مؤخراً (مهم جداً إضافتها) +++

@@ -6121,15 +6121,7 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[HealthAidAPI.Helpers.PagedResult\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6145,15 +6137,23 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HealthAidAPI.Controllers.RatingsController",
+    "Method": "GetRating",
+    "RelativePath": "api/Ratings/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
-    ]
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6174,15 +6174,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6198,39 +6190,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "HealthAidAPI.Controllers.RatingsController",
-    "Method": "GetRating",
-    "RelativePath": "api/Ratings/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6251,15 +6211,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[HealthAidAPI.DTOs.Ratings.AverageRatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6275,15 +6227,7 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RatingsController",
@@ -6304,15 +6248,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "HealthAidAPI.Helpers.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[HealthAidAPI.DTOs.Ratings.RatingDto, HealthAidAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HealthAidAPI.Controllers.RecommendationController",

@@ -8742,14 +8742,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Ratings.RatingDto]]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       },
@@ -8778,19 +8771,34 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.RatingDto]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
     },
     "/api/Ratings/{id}": {
+      "get": {
+        "tags": [
+          "Ratings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
       "put": {
         "tags": [
           "Ratings"
@@ -8828,14 +8836,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.RatingDto]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       },
@@ -8857,43 +8858,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Object]"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Ratings"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.RatingDto]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -8926,14 +8891,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.IEnumerable`1[HealthAidAPI.DTOs.Ratings.RatingDto]]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -8966,14 +8924,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.AverageRatingDto]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -8997,14 +8948,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.IEnumerable`1[HealthAidAPI.DTOs.Ratings.RatingDto]]"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -14681,45 +14625,10 @@
         },
         "additionalProperties": false
       },
-      "HealthAidAPI.DTOs.Ratings.AverageRatingDto": {
-        "type": "object",
-        "properties": {
-          "TargetType": {
-            "type": "string",
-            "nullable": true
-          },
-          "TargetId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Average": {
-            "type": "number",
-            "format": "double"
-          },
-          "TotalRatings": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Distribution": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          },
-          "TargetName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "HealthAidAPI.DTOs.Ratings.CreateRatingDto": {
         "required": [
           "TargetId",
           "TargetType",
-          "UserId",
           "Value"
         ],
         "type": "object",
@@ -14745,58 +14654,6 @@
           "Comment": {
             "maxLength": 500,
             "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "UserId": {
-            "maximum": 2147483647,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "HealthAidAPI.DTOs.Ratings.RatingDto": {
-        "type": "object",
-        "properties": {
-          "RatingId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "TargetType": {
-            "type": "string",
-            "nullable": true
-          },
-          "TargetId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Value": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "Date": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "UserId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "UserName": {
-            "type": "string",
-            "nullable": true
-          },
-          "UserEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "TargetName": {
             "type": "string",
             "nullable": true
           }
@@ -15931,38 +15788,6 @@
         },
         "additionalProperties": false
       },
-      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.AverageRatingDto]": {
-        "type": "object",
-        "properties": {
-          "Success": {
-            "type": "boolean"
-          },
-          "Message": {
-            "type": "string",
-            "nullable": true
-          },
-          "Data": {
-            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Ratings.AverageRatingDto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Ratings.RatingDto]": {
-        "type": "object",
-        "properties": {
-          "Success": {
-            "type": "boolean"
-          },
-          "Message": {
-            "type": "string",
-            "nullable": true
-          },
-          "Data": {
-            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Ratings.RatingDto"
-          }
-        },
-        "additionalProperties": false
-      },
       "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Recommendations.PatientHealthProfileDto]": {
         "type": "object",
         "properties": {
@@ -15995,22 +15820,6 @@
         },
         "additionalProperties": false
       },
-      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Ratings.RatingDto]]": {
-        "type": "object",
-        "properties": {
-          "Success": {
-            "type": "boolean"
-          },
-          "Message": {
-            "type": "string",
-            "nullable": true
-          },
-          "Data": {
-            "$ref": "#/components/schemas/HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Ratings.RatingDto]"
-          }
-        },
-        "additionalProperties": false
-      },
       "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Emergency.EmergencyResponder]": {
         "type": "object",
         "properties": {
@@ -16023,26 +15832,6 @@
           },
           "Data": {
             "$ref": "#/components/schemas/HealthAidAPI.Models.Emergency.EmergencyResponder"
-          }
-        },
-        "additionalProperties": false
-      },
-      "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.IEnumerable`1[HealthAidAPI.DTOs.Ratings.RatingDto]]": {
-        "type": "object",
-        "properties": {
-          "Success": {
-            "type": "boolean"
-          },
-          "Message": {
-            "type": "string",
-            "nullable": true
-          },
-          "Data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Ratings.RatingDto"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -16142,22 +15931,6 @@
             "items": {
               "$ref": "#/components/schemas/HealthAidAPI.Models.Emergency.EmergencyResponder"
             },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HealthAidAPI.Helpers.ApiResponse`1[System.Object]": {
-        "type": "object",
-        "properties": {
-          "Success": {
-            "type": "boolean"
-          },
-          "Message": {
-            "type": "string",
-            "nullable": true
-          },
-          "Data": {
             "nullable": true
           }
         },
@@ -16588,44 +16361,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HealthAidAPI.DTOs.PublicAlerts.PublicAlertDto"
-            },
-            "nullable": true
-          },
-          "TotalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "PageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "TotalPages": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "HasPrevious": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "HasNext": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Ratings.RatingDto]": {
-        "type": "object",
-        "properties": {
-          "Items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Ratings.RatingDto"
             },
             "nullable": true
           },

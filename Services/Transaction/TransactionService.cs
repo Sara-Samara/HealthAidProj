@@ -38,7 +38,9 @@ namespace HealthAidAPI.Services
                 .Include(t => t.User)
                 .AsQueryable();
 
+            // ============================
             // Filtering
+            // ============================
             if (filter.UserId.HasValue)
                 query = query.Where(t => t.UserId == filter.UserId.Value);
 
@@ -66,24 +68,34 @@ namespace HealthAidAPI.Services
             if (filter.EndDate.HasValue)
                 query = query.Where(t => t.Date <= filter.EndDate.Value);
 
+            // ============================
             // Sorting
+            // ============================
             query = filter.SortBy?.ToLower() switch
             {
-                "amount" => filter.SortDesc ? query.OrderByDescending(t => t.Amount) : query.OrderBy(t => t.Amount),
-                "date" => filter.SortDesc ? query.OrderByDescending(t => t.Date) : query.OrderBy(t => t.Date),
+                "amount" => filter.SortDesc
+                    ? query.OrderByDescending(t => t.Amount)
+                    : query.OrderBy(t => t.Amount),
+
+                "date" => filter.SortDesc
+                    ? query.OrderByDescending(t => t.Date)
+                    : query.OrderBy(t => t.Date),
+
                 _ => query.OrderByDescending(t => t.TransactionId)
             };
 
+            // ============================
+            // Pagination base count
+            // ============================
             int totalCount = await query.CountAsync();
 
-            var data = await query
-                
-                .Select(t => _mapper.Map<TransactionDto>(t))
-                .ToListAsync();
+            // ============================
+            // Fetch + Map (IMPORTANT FIX)
+            // ============================
+            var entities = await query.ToListAsync();
+            var data = _mapper.Map<List<TransactionDto>>(entities);
+
             return new PagedResult<TransactionDto>(data, totalCount);
-
-
-
         }
 
         // ============================================================

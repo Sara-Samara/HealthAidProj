@@ -50,9 +50,7 @@ namespace HealthAidAPI.Controllers
                 Message = msg
             });
 
-        // ============================
-        // GET Transactions (Admin: all / User: his)
-        // ============================
+
         [HttpGet]
         public async Task<IActionResult> GetTransactions([FromQuery] TransactionFilterDto filter)
         {
@@ -60,8 +58,8 @@ namespace HealthAidAPI.Controllers
             {
                 int currentUserId = GetCurrentUserId();
 
-                if (!IsAdmin)
-                    filter.UserId = currentUserId;
+                // ✅ دايمًا اربط بالمستخدم المسجل
+                filter.UserId = currentUserId;
 
                 var result = await _transactionService.GetTransactionsAsync(filter);
 
@@ -87,9 +85,6 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // ============================
-        // GET Single Transaction
-        // ============================
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTransaction(int id)
         {
@@ -121,17 +116,30 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // ============================
-        // CREATE Transaction
-        // ============================
+        
+        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> CreateTransaction(CreateTransactionDto dto)
         {
             try
             {
                 int currentUserId = GetCurrentUserId();
-
                 dto.UserId = currentUserId;
+
+      
+                int refs =
+                    (dto.ConsultationId != null ? 1 : 0) +
+                    (dto.DonationId != null ? 1 : 0) +
+                    (dto.MedicineRequestId != null ? 1 : 0);
+
+                if (refs != 1)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Transaction must be linked to exactly one of Consultation, Donation, or MedicineRequest."
+                    });
+                }
 
                 var transaction = await _transactionService.CreateTransactionAsync(dto);
 
@@ -167,9 +175,6 @@ namespace HealthAidAPI.Controllers
             }
         }
 
-        // ============================
-        // UPDATE Transaction
-        // ============================
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, UpdateTransactionDto dto)
         {

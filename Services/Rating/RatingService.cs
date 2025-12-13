@@ -215,11 +215,15 @@ namespace HealthAidAPI.Services.Implementations
             };
         }
 
-        public async Task<bool> DeleteRatingAsync(int id, int userId)
+        public async Task<bool> DeleteRatingAsync(int id, int userId, bool isAdmin)
         {
             var rating = await _context.Ratings.FindAsync(id);
 
-            if (rating == null || rating.UserId != userId)
+            if (rating == null)
+                return false;
+
+            // 🔒 User عادي: يحذف بس تبعه
+            if (!isAdmin && rating.UserId != userId)
                 return false;
 
             _context.Ratings.Remove(rating);
