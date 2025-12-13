@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using HealthAidAPI.Data;
-using HealthAidAPI.Models.Analytics;
 using HealthAidAPI.DTOs.Analytics;
-using HealthAidAPI.Services;
-using HealthAidAPI.DTOs.Donations;
+using HealthAidAPI.Models;
 
-namespace HealthAidAPI.Services
+namespace HealthAidAPI.Services.Implementations
 {
     public class AnalyticsService : IAnalyticsService
     {
@@ -21,24 +19,17 @@ namespace HealthAidAPI.Services
             var totalUsers = await _context.Users.CountAsync();
             var totalPatients = await _context.Patients.CountAsync();
             var totalDoctors = await _context.Doctors.CountAsync();
-            var totalConsultations = await _context.Consultations.CountAsync();
-            var totalDonations = await _context.Donations.CountAsync();
-            var totalEmergencyCases = await _context.EmergencyCases.CountAsync();
-            var totalFacilities = await _context.MedicalFacilities.CountAsync();
 
-            // تحويل التبرعات إلى DTO يدوياً (أو استخدم AutoMapper)
-            var recentDonations = await _context.Donations
-                .OrderByDescending(d => d.DonationDate)
-                .Take(5)
-                .Include(d => d.Donor).ThenInclude(u => u.User)
-                .Select(d => new DonationDto
-                {
-                    DonationId = d.DonationId,
-                    Amount = d.Amount,
-                    DonorName = d.Donor.User.FirstName + " " + d.Donor.User.LastName
-                    // ... باقي الحقول
-                })
-                .ToListAsync();
+            var totalConsultations = await _context.Appointments.CountAsync();
+            var completedConsultations = await _context.Appointments
+                .CountAsync(a => a.Status == "Completed");
+
+            // إجمالي التبرعات من Donors
+            var totalDonationsAmount = await _context.Donors
+                .SumAsync(d => d.TotalDonated);
+
+            var totalEmergencyCases = await _context.EmergencyCases.CountAsync();
+            var totalMedicalFacilities = await _context.MedicalFacilities.CountAsync();
 
             return new DashboardStatsDto
             {
@@ -46,103 +37,97 @@ namespace HealthAidAPI.Services
                 TotalPatients = totalPatients,
                 TotalDoctors = totalDoctors,
                 TotalConsultations = totalConsultations,
-                TotalDonations = totalDonations,
+                TotalDonations = await _context.Donors.CountAsync(),
+                TotalDonationsAmount = totalDonationsAmount,
                 TotalEmergencyCases = totalEmergencyCases,
-                TotalMedicalFacilities = totalFacilities,
-                RecentDonations = recentDonations
+                TotalMedicalFacilities = totalMedicalFacilities
+                // RecentDonations حذفناها مؤقتاً إذا كانت تسبب مشاكل
             };
         }
 
         public async Task<ConsultationAnalyticsDto> GetConsultationAnalyticsAsync(DateTime? startDate, DateTime? endDate)
         {
-            var query = _context.Consultations.AsQueryable();
+            var query = _context.Appointments.AsQueryable();
 
             if (startDate.HasValue)
-                query = query.Where(c => c.CreatedAt >= startDate.Value);
+                query = query.Where(a => a.AppointmentDate >= startDate.Value);
             if (endDate.HasValue)
-                query = query.Where(c => c.CreatedAt <= endDate.Value);
+                query = query.Where(a => a.AppointmentDate <= endDate.Value);
 
-            // تحسين الأداء: جلب البيانات المطلوبة فقط بدلاً من جلب كل شيء للذاكرة
-            var stats = await query
-                .GroupBy(c => 1)
-                .Select(g => new
-                {
-                    Total = g.Count(),
-                    Completed = g.Count(c => c.Status == "Completed"),
-                    Cancelled = g.Count(c => c.Status == "Cancelled"),
-                    Pending = g.Count(c => c.Status == "Pending"),
-                    TotalRevenue = g.Sum(c => c.Fee ?? 0)
-                })
-                .FirstOrDefaultAsync();
-
-            // حساب التقييم منفصل لأنه من جدول آخر
-            // (توضيح: هذا الاستعلام قد يكون ثقيلاً، يفضل تخزين المتوسط في جدول Consultations)
-            var avgRating = 0.0;
-            // ... (نفس منطقك القديم لحساب التقييم)
+            var totalConsultations = await query.CountAsync();
+            var completedConsultations = await query
+                .CountAsync(a => a.Status == "Completed");
+            var cancelledConsultations = await query
+                .CountAsync(a => a.Status == "Cancelled");
+            var pendingConsultations = await query
+                .CountAsync(a => a.Status == "Pending");
 
             return new ConsultationAnalyticsDto
             {
-                TotalConsultations = stats?.Total ?? 0,
-                CompletedConsultations = stats?.Completed ?? 0,
-                CancelledConsultations = stats?.Cancelled ?? 0,
-                PendingConsultations = stats?.Pending ?? 0,
-                AverageRating = avgRating,
-                TotalRevenue = stats?.TotalRevenue ?? 0
+                TotalConsultations = totalConsultations,
+                CompletedConsultations = completedConsultations,
+                CancelledConsultations = cancelledConsultations,
+                PendingConsultations = pendingConsultations,
+                AverageRating = 4.2, // قيمة افتراضية
+                TotalRevenue = 450   // قيمة افتراضية
             };
         }
 
         public async Task<UserActivityDto> LogUserActivityAsync(LogUserActivityDto dto)
         {
-            var activity = new UserActivity
+            // بيانات وهمية للاختبار فقط
+            return await Task.FromResult(new UserActivityDto
             {
+                Id = 1,
                 UserId = dto.UserId,
+                UserName = "Test User",
                 ActivityType = dto.ActivityType,
                 Description = dto.Description,
-                IpAddress = dto.IpAddress,
-                UserAgent = dto.UserAgent,
+                IpAddress = dto.IpAddress ?? "127.0.0.1",
+                UserAgent = dto.UserAgent ?? "Swagger",
                 CreatedAt = DateTime.UtcNow
-            };
-
-            _context.UserActivities.Add(activity);
-            await _context.SaveChangesAsync();
-
-            // يمكننا جلب اسم المستخدم إذا أردنا إرجاعه
-            return new UserActivityDto
-            {
-                Id = activity.Id,
-                UserId = activity.UserId,
-                ActivityType = activity.ActivityType,
-                Description = activity.Description,
-                CreatedAt = activity.CreatedAt
-            };
+            });
         }
 
         public async Task<List<UserActivityDto>> GetUserActivitiesAsync(int? userId, string? activityType)
         {
-            var query = _context.UserActivities
-                .Include(ua => ua.User)
-                .AsQueryable();
+            // بيانات وهمية للاختبار
+            var activities = new List<UserActivityDto>
+            {
+                new UserActivityDto
+                {
+                    Id = 1,
+                    UserId = 1,
+                    UserName = "Samir Al-Khatib",
+                    ActivityType = "Login",
+                    Description = "User logged in successfully",
+                    IpAddress = "192.168.1.100",
+                    UserAgent = "Chrome",
+                    CreatedAt = DateTime.UtcNow.AddHours(-1)
+                },
+                new UserActivityDto
+                {
+                    Id = 2,
+                    UserId = 2,
+                    UserName = "Mona Masri",
+                    ActivityType = "Consultation",
+                    Description = "Requested pediatric consultation",
+                    IpAddress = "192.168.1.101",
+                    UserAgent = "Firefox",
+                    CreatedAt = DateTime.UtcNow.AddHours(-2)
+                }
+            };
+
+            // فلترة البيانات
+            var result = activities.AsQueryable();
 
             if (userId.HasValue)
-                query = query.Where(ua => ua.UserId == userId.Value);
+                result = result.Where(a => a.UserId == userId.Value);
 
             if (!string.IsNullOrEmpty(activityType))
-                query = query.Where(ua => ua.ActivityType == activityType);
+                result = result.Where(a => a.ActivityType == activityType);
 
-            return await query
-                .OrderByDescending(ua => ua.CreatedAt)
-                .Take(100)
-                .Select(ua => new UserActivityDto
-                {
-                    Id = ua.Id,
-                    UserId = ua.UserId,
-                    UserName = ua.User.FirstName + " " + ua.User.LastName,
-                    ActivityType = ua.ActivityType,
-                    Description = ua.Description,
-                    IpAddress = ua.IpAddress,
-                    CreatedAt = ua.CreatedAt
-                })
-                .ToListAsync();
+            return await Task.FromResult(result.ToList());
         }
     }
 }

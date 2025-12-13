@@ -1,6 +1,7 @@
 ﻿using HealthAidAPI.DTOs.Analytics;
 using HealthAidAPI.Helpers;
 using HealthAidAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthAidAPI.Controllers
@@ -8,6 +9,7 @@ namespace HealthAidAPI.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
+    //[Authorize(Roles = "Admin,Doctor")] 
     public class AnalyticsController : ControllerBase
     {
         private readonly IAnalyticsService _analyticsService;
@@ -50,6 +52,16 @@ namespace HealthAidAPI.Controllers
         {
             try
             {
+                // التحقق من صحة التواريخ
+                if (startDate.HasValue && endDate.HasValue && startDate > endDate)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Start date cannot be after end date"
+                    });
+                }
+
                 var analytics = await _analyticsService.GetConsultationAnalyticsAsync(startDate, endDate);
                 return Ok(new ApiResponse<ConsultationAnalyticsDto>
                 {
@@ -70,11 +82,20 @@ namespace HealthAidAPI.Controllers
         }
 
         [HttpPost("activities")]
-        public async Task<ActionResult<ApiResponse<UserActivityDto>>> LogUserActivity(LogUserActivityDto activityDto)
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse<UserActivityDto>>> LogUserActivity([FromBody] LogUserActivityDto activityDto)
         {
-            // التحقق من صحة النموذج تلقائي بفضل [ApiController] والـ Data Annotations في الـ DTO
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Invalid request data"
+                    });
+                }
+
                 var activity = await _analyticsService.LogUserActivityAsync(activityDto);
                 return Ok(new ApiResponse<UserActivityDto>
                 {
@@ -118,6 +139,23 @@ namespace HealthAidAPI.Controllers
                     Message = "Internal server error"
                 });
             }
+        }
+
+        [HttpGet("health")]
+        [AllowAnonymous]
+        public IActionResult HealthCheck()
+        {
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Analytics service is healthy",
+                Data = new
+                {
+                    Service = "Analytics API",
+                    Status = "Running",
+                    Timestamp = DateTime.UtcNow
+                }
+            });
         }
     }
 }

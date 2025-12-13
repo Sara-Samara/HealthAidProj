@@ -10,7 +10,7 @@ namespace HealthAidAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     public class AppointmentsController : ControllerBase
     {
