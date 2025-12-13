@@ -175,6 +175,66 @@
             Check if license number exists
             </summary>
         </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.GetDonations(HealthAidAPI.DTOs.Donations.DonationFilterDto)">
+            <summary>
+            Get all donations with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.GetDonation(System.Int32)">
+            <summary>
+            Get donation by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.CreateDonation(HealthAidAPI.DTOs.Donations.CreateDonationDto)">
+            <summary>
+            Create a new donation
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.UpdateStatus(System.Int32,HealthAidAPI.DTOs.Donations.UpdateDonationStatusDto)">
+            <summary>
+            Update donation status (Admin only)
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.GetDonorDonations(System.Int32)">
+            <summary>
+            Get donations for a specific donor
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonationsController.GetStats">
+            <summary>
+            Get donation statistics
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.GetDonors(HealthAidAPI.DTOs.Donors.DonorFilterDto)">
+            <summary>
+            Get all donors with filtering and pagination
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.GetDonor(System.Int32)">
+            <summary>
+            Get donor by ID
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.CreateDonor(HealthAidAPI.DTOs.Donors.CreateDonorDto)">
+            <summary>
+            Create a new donor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.UpdateDonor(System.Int32,HealthAidAPI.DTOs.Donors.UpdateDonorDto)">
+            <summary>
+            Update donor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.DeleteDonor(System.Int32)">
+            <summary>
+            Delete donor profile
+            </summary>
+        </member>
+        <member name="M:HealthAidAPI.Controllers.DonorsController.GetTopDonors(System.Int32)">
+            <summary>
+            Get top donors by donation amount
+            </summary>
+        </member>
         <member name="M:HealthAidAPI.Controllers.EmergencyController.GetEmergencyCases(System.String)">
             <summary>
             Get all emergency cases with optional status filtering
@@ -1179,6 +1239,27 @@
         </member>
         <member name="M:HealthAidAPI.Migrations.F.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="T:HealthAidAPI.Resources.SharedResource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HealthAidAPI.Resources.SharedResource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HealthAidAPI.Resources.SharedResource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HealthAidAPI.Resources.SharedResource.WelcomeMessage">
+            <summary>
+              Looks up a localized string similar to Welcome to HealthAid.
+            </summary>
         </member>
     </members>
 </doc>

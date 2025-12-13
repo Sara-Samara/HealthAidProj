@@ -7,7 +7,6 @@
         public int TotalPrescriptions { get; set; }
         public int ActivePrescriptions { get; set; }
 
-        // يعتمد على PrescriptionDto
         public List<PrescriptionDto> RecentPrescriptions { get; set; } = new();
     }
 }

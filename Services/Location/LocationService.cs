@@ -5,8 +5,8 @@ using HealthAidAPI.Services;
 
 // DTOs Namespaces
 using HealthAidAPI.DTOs.Locations;
-using HealthAidAPI.DTOs.MedicalFacilities; // تأكد من وجود هذا الـ Namespace
-using HealthAidAPI.DTOs.Emergency;         // تأكد من وجود هذا الـ Namespace
+using HealthAidAPI.DTOs.MedicalFacilities; 
+using HealthAidAPI.DTOs.Emergency;         
 
 namespace HealthAidAPI.Services
 {
@@ -19,7 +19,6 @@ namespace HealthAidAPI.Services
             _context = context;
         }
 
-        // 1. تحديث أو إضافة موقع المستخدم
         public async Task<UserLocationDto> UpdateUserLocationAsync(UpdateUserLocationDto dto)
         {
             var location = new UserLocation
@@ -36,7 +35,6 @@ namespace HealthAidAPI.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            // إذا كان هذا الموقع هو الأساسي، قم بإلغاء الأساسي من المواقع الأخرى
             if (dto.IsPrimary)
             {
                 var existingPrimaries = await _context.UserLocations
@@ -55,7 +53,6 @@ namespace HealthAidAPI.Services
             return MapToUserLocationDto(location);
         }
 
-        // 2. جلب مواقع المستخدم
         public async Task<List<UserLocationDto>> GetUserLocationsAsync(int userId)
         {
             var locations = await _context.UserLocations
@@ -66,18 +63,14 @@ namespace HealthAidAPI.Services
             return locations.Select(MapToUserLocationDto).ToList();
         }
 
-        // 3. جلب خدمات الطوارئ القريبة
         public async Task<EmergencyServicesResponseDto> GetEmergencyServicesAsync(decimal latitude, decimal longitude, decimal radius)
         {
-            // ملاحظة: لحساب المسافة بدقة يجب استخدام Geo-Spatial Data Types في SQL
-            // هنا سنقوم بجلب أقرب المراكز المفعلة كحل مبسط ومتوافق مع الكود الحالي
-
+            
             var hospitals = await _context.MedicalFacilities
                 .Where(f => f.Type == "Hospital" && f.IsActive && f.Verified)
-                .Take(10) // يمكن تحسين المنطق لحساب المسافة لاحقاً
+                .Take(10) 
                 .Select(h => new MedicalFacilityDto
                 {
-                    // تأكد أن هذه الخصائص موجودة في MedicalFacilityDto
                     Id = h.Id,
                     Name = h.Name,
                     Type = h.Type,
@@ -95,7 +88,6 @@ namespace HealthAidAPI.Services
                 .Take(10)
                 .Select(r => new EmergencyResponderDto
                 {
-                    // تأكد أن هذه الخصائص موجودة في EmergencyResponderDto
                     Id = r.Id,
                     UserId = r.UserId,
                     UserName = $"{r.User.FirstName} {r.User.LastName}",
@@ -115,7 +107,6 @@ namespace HealthAidAPI.Services
             };
         }
 
-        // 4. جلب مناطق الخدمة
         public async Task<List<ServiceAreaDto>> GetServiceAreasAsync()
         {
             var areas = await _context.ServiceAreas
@@ -125,7 +116,6 @@ namespace HealthAidAPI.Services
             return areas.Select(MapToServiceAreaDto).ToList();
         }
 
-        // 5. إنشاء منطقة خدمة جديدة
         public async Task<ServiceAreaDto> CreateServiceAreaAsync(CreateServiceAreaDto dto)
         {
             var area = new ServiceArea

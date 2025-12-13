@@ -11,7 +11,6 @@
         public int TotalPatients { get; set; }
         public int TotalDoctors { get; set; }
 
-        // يعتمد على RecentPrescriptionDto
         public List<RecentPrescriptionDto> RecentPrescriptions { get; set; } = new();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HealthAidAPI.Models;
 using HealthAidAPI.Models.Analytics;
 using HealthAidAPI.Models.Emergency;
+using HealthAidAPI.Models.Extras;
 using HealthAidAPI.Models.Location;
 using HealthAidAPI.Models.MedicalFacilities;
 using HealthAidAPI.Models.Recommendations;
@@ -50,6 +51,10 @@ namespace HealthAidAPI.Data
         public DbSet<UserLocation> UserLocations { get; set; }
         public DbSet<ServiceArea> ServiceAreas { get; set; }
         public DbSet<OfflineQueue> OfflineQueues { get; set; }
+        public DbSet<BloodRequest> BloodRequests { get; set; }
+        public DbSet<PharmacyInventory> PharmacyInventories { get; set; }
+        public DbSet<PatientVital> PatientVitals { get; set; }
+        public DbSet<VolunteerOpportunity> VolunteerOpportunities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

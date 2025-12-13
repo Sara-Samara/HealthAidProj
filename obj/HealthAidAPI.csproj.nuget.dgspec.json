@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Downloads\\HealthAidProject\\HealthAidProject\\HealthAidProject\\HealthAidAPI.csproj": {}
+    "C:\\Users\\HP\\Downloads\\project\\HealthAidProject\\HealthAidAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Downloads\\HealthAidProject\\HealthAidProject\\HealthAidProject\\HealthAidAPI.csproj": {
+    "C:\\Users\\HP\\Downloads\\project\\HealthAidProject\\HealthAidAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Downloads\\HealthAidProject\\HealthAidProject\\HealthAidProject\\HealthAidAPI.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Downloads\\project\\HealthAidProject\\HealthAidAPI.csproj",
         "projectName": "HealthAidAPI",
-        "projectPath": "C:\\Users\\HP\\Downloads\\HealthAidProject\\HealthAidProject\\HealthAidProject\\HealthAidAPI.csproj",
+        "projectPath": "C:\\Users\\HP\\Downloads\\project\\HealthAidProject\\HealthAidAPI.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Downloads\\HealthAidProject\\HealthAidProject\\HealthAidProject\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Downloads\\project\\HealthAidProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -89,6 +89,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.4, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[50.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -4,7 +4,7 @@ using HealthAidAPI.Models;
 using HealthAidAPI.Services;
 using HealthAidAPI.Services.Implementations;
 using HealthAidAPI.Services.Interfaces;
-using HealthAidAPI.Services.MedicineRequest; // تأكد من Namespace السيرفس الخاص بطلبات الدواء
+using HealthAidAPI.Services.MedicineRequest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,78 +13,47 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Database Configuration
+// ====================================================
+// 1. Configuration & Core Services
+// ====================================================
+
+// Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. AutoMapper
+// Settings Injection
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+// Infrastructure
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-// 3. Register Services (Dependency Injection)
-// ================================================================
-// الخدمات القديمة
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IDoctorService, DoctorService>();
-builder.Services.AddScoped<IPatientService, PatientService>();
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<INgoService, NgoService>();
-builder.Services.AddScoped<INgoMissionService, NgoMissionService>();
-builder.Services.AddScoped<IConsultationService, ConsultationService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<ISponsorshipService, SponsorshipService>();
-builder.Services.AddScoped<IMedicineRequestService, MedicineRequestService>();
-builder.Services.AddScoped<IServiceService, ServiceService>();
-builder.Services.AddScoped<IPublicAlertService, PublicAlertService>();
-// Register External API Service
-builder.Services.AddHttpClient<IExternalMedicalService, ExternalMedicalService>();
-// +++ الخدمات الجديدة التي أضفناها مؤخراً (مهم جداً إضافتها) +++
-builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<IEmergencyService, EmergencyService>();
-builder.Services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
-builder.Services.AddScoped<IRecommendationService, RecommendationService>();
-builder.Services.AddScoped<IMentalSupportSessionService, MentalSupportSessionService>(); // فعل هذا السطر إذا أنشأت السيرفس
-builder.Services.AddScoped<IHealthGuideService, HealthGuideService>(); // فعل هذا السطر إذا أنشأت السيرفس
-builder.Services.AddScoped<IPrescriptionService, PrescriptionService>(); // فعل هذا السطر إذا أنشأت السيرفس
-builder.Services.AddScoped<IEquipmentService, EquipmentService>(); // فعل هذا السطر إذا أنشأت السيرفس
-builder.Services.AddScoped<IRatingService, RatingService>(); // فعل هذا السطر إذا أنشأت السيرفس
-// ================================================================
-
-builder.Services.Configure<EmailSettings>(
-    builder.Configuration.GetSection("EmailSettings"));
-
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]!);
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("DoctorOnly", policy => policy.RequireRole("Doctor"));
-    options.AddPolicy("PatientOnly", policy => policy.RequireRole("Patient"));
-    options.AddPolicy("DoctorOrAdmin", policy => policy.RequireRole("Doctor", "Admin"));
-    options.AddPolicy("AllUsers", policy => policy.RequireRole("Admin", "Doctor", "Patient", "Donor"));
-});
-
+builder.Services.AddSignalR();
 builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddHttpContextAccessor();
 
+// CORS - محددة بشكل آمن
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:3000",
+                "https://localhost:3000",
+                "http://localhost:4200",
+                "https://localhost:4200",
+                "http://localhost:5000",
+                "https://localhost:5000",
+                "http://localhost:7000",
+                "https://localhost:7000"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+
+// Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -92,19 +61,97 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
+// ====================================================
+// 2. Dependency Injection
+// ====================================================
+
+// Auth & User
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDonorService, DonorService>();
+builder.Services.AddScoped<INgoService, NgoService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+
+// Communication
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IPublicAlertService, PublicAlertService>();
+
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+// Medical
+builder.Services.AddScoped<IConsultationService, ConsultationService>();
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+builder.Services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
+builder.Services.AddScoped<IHealthGuideService, HealthGuideService>();
+builder.Services.AddScoped<IMentalSupportSessionService, MentalSupportSessionService>();
+builder.Services.AddScoped<IMedicineRequestService, MedicineRequestService>();
+
+// Emergency & Logistics
+builder.Services.AddScoped<IEmergencyService, EmergencyService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<INgoMissionService, NgoMissionService>();
+
+// Financial
+builder.Services.AddScoped<ISponsorshipService, SponsorshipService>();
+builder.Services.AddScoped<IDonationService, DonationService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+
+// Utilities
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IAiService, AiService>();
+
+// Medical Services
+builder.Services.AddScoped<IBloodBankService, BloodBankService>();
+builder.Services.AddScoped<IPharmacyService, PharmacyService>();
+builder.Services.AddScoped<IVitalsService, VitalsService>();
+
+// ====================================================
+// 3. Authentication & Authorization
+// ====================================================
+
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]!);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("DoctorOnly", policy => policy.RequireRole("Doctor"));
+    options.AddPolicy("PatientOnly", policy => policy.RequireRole("Patient"));
+    options.AddPolicy("DonorOnly", policy => policy.RequireRole("Donor"));
+    options.AddPolicy("DoctorOrAdmin", policy => policy.RequireRole("Doctor", "Admin"));
+    options.AddPolicy("AllUsers", policy => policy.RequireRole("Admin", "Doctor", "Patient", "Donor"));
 });
 
-builder.Services.AddEndpointsApiExplorer();
-
+// ====================================================
 // 4. Swagger Configuration
+// ====================================================
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -119,9 +166,10 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // +++ حل مشكلة تكرار الأسماء في Swagger بسبب الـ Namespaces الجديدة +++
+    // Accept-Language header
+    c.OperationFilter<AcceptLanguageHeaderFilter>();
+
     c.CustomSchemaIds(type => type.ToString());
-    // ===================================================================
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -130,7 +178,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter JWT token"
+        Description = "Enter JWT token (format: Bearer {token})"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -151,26 +199,48 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ====================================================
+// 5. Middleware Pipeline
+// ====================================================
+
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthAid API v1.0");
     c.RoutePrefix = "swagger";
+    c.DisplayRequestDuration();
 });
 
-// Database Seeding
+// Localization
+var supportedCultures = new[] { "en-US", "ar-PS" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+app.UseRequestLocalization(localizationOptions);
+
+// 🚨 الترتيب الصحيح للميدلوير 🚨
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseCors("AllowAll");      // CORS أولاً
+app.UseAuthentication();      // ثم التوثيق
+app.UseAuthorization();       // ثم الصلاحيات
+
+// ====================================================
+// 6. Database Seeding
+// ====================================================
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-
+    var services = scope.ServiceProvider;
     try
     {
-        // يفضل استخدام MigrateAsync في الإنتاج بدلاً من EnsureCreatedAsync
-        // await db.Database.MigrateAsync(); 
+        var db = services.GetRequiredService<ApplicationDbContext>();
+        var passwordHasher = services.GetRequiredService<IPasswordHasher>();
+
         await db.Database.EnsureCreatedAsync();
 
+        // إنشاء Admin إذا لم يكن موجوداً
         if (!db.Users.Any(u => u.Email == "admin@healthaid.ps"))
         {
             var adminUser = new User
@@ -188,24 +258,72 @@ using (var scope = app.Services.CreateScope())
                 EmailVerified = true,
                 CreatedAt = DateTime.UtcNow
             };
-
             db.Users.Add(adminUser);
             await db.SaveChangesAsync();
             Console.WriteLine("✅ Admin user created successfully!");
         }
-        else
-        {
-            Console.WriteLine("ℹ️ Admin user already exists");
-        }
 
-        Console.WriteLine("✅ Database seeding completed!");
+        // Seed البيانات
+        await SeedData.SeedAsync(db, passwordHasher);
+        Console.WriteLine("✅ Database fully seeded with demo data!");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"ℹ️ Note: {ex.Message}");
+        Console.WriteLine($"ℹ️ Seeding Error: {ex.Message}");
     }
 }
 
+// ====================================================
+// 7. Endpoints
+// ====================================================
+
+app.MapControllers();
+
+// SignalR Hub
+app.MapHub<HealthAidAPI.Hubs.HealthAidHub>("/hubs/healthaid");
+
+// Health Check Endpoint
+app.MapGet("/health", () => Results.Ok(new
+{
+    Status = "Healthy",
+    Service = "HealthAid API",
+    Version = "1.0.0",
+    Timestamp = DateTime.UtcNow
+}));
+
+// Database Test Endpoint
+app.MapGet("/api/test/db", async (ApplicationDbContext db) =>
+{
+    try
+    {
+        var canConnect = await db.Database.CanConnectAsync();
+        var usersCount = await db.Users.CountAsync();
+
+        return Results.Ok(new
+        {
+            Database = canConnect ? "Connected" : "Not Connected",
+            UsersCount = usersCount,
+            Timestamp = DateTime.UtcNow
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Database error: {ex.Message}");
+    }
+});
+
+// Root Redirect to Swagger
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+
+Console.WriteLine("========================================");
+Console.WriteLine("🚀 HealthAid API is running!");
+Console.WriteLine("📚 Swagger: https://localhost:7001/swagger");
+Console.WriteLine("🏥 Health Check: /health");
+Console.WriteLine("========================================");
+
+app.Run();
+
+// Helper Function
 async Task<string> GenerateUniquePhoneNumberAsync(ApplicationDbContext dbContext)
 {
     var random = new Random();
@@ -225,39 +343,9 @@ async Task<string> GenerateUniquePhoneNumberAsync(ApplicationDbContext dbContext
             phoneNumber = $"+97059{DateTime.Now.Ticks % 10000000}";
             break;
         }
-
     } while (true);
 
     return phoneNumber;
 }
-
-app.UseHttpsRedirection();
-app.UseCors("AllowAll");
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.MapGet("/", () =>
-{
-    return Results.Ok(new
-    {
-        message = "HealthAid API is running!",
-        documentation = "/swagger",
-        endpoints = new
-        {
-            swagger = "/swagger",
-            emergency = "/api/emergency",
-            medical = "/api/medicalfacility",
-            analytics = "/api/analytics/dashboard"
-        }
-    });
-});
-
-Console.WriteLine("HealthAid API is running!");
-Console.WriteLine("Swagger Documentation: /swagger");
-Console.WriteLine("HealthAid - Palestinian Healthcare Platform");
-
-app.Run();
 
 public partial class Program { }

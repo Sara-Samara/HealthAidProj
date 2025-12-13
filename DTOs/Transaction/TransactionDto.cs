@@ -1,7 +1,7 @@
 ﻿using HealthAidAPI.DTOs.Users;
 using HealthAidAPI.DTOs.Consultations;
 using HealthAidAPI.DTOs.MedicineRequests;
-using HealthAidAPI.DTOs.Donations; // تأكد من إنشاء هذا الـ Namespace للكلاس الأخير
+using HealthAidAPI.DTOs.Donations;
 
 namespace HealthAidAPI.DTOs.Transactions
 {

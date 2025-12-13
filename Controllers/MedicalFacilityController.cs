@@ -1,5 +1,5 @@
 ﻿using HealthAidAPI.DTOs.MedicalFacilities;
-using HealthAidAPI.Models; // للـ ApiResponse
+using HealthAidAPI.Models;
 using HealthAidAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using HealthAidAPI.Helpers;

@@ -10,10 +10,82 @@
     "version": "v1.0"
   },
   "paths": {
+    "/api/Ai/check-symptoms": {
+      "post": {
+        "tags": [
+          "Ai"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Analytics/dashboard": {
       "get": {
         "tags": [
           "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -52,6 +124,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -60,7 +142,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Analytics.ConsultationAnalyticsDto]"
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[ConsultationAnalyticsDto]"
                 }
               }
             }
@@ -72,6 +154,18 @@
       "post": {
         "tags": [
           "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -126,6 +220,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -138,6 +242,30 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Analytics/health": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -233,6 +361,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -261,6 +399,18 @@
       "post": {
         "tags": [
           "Appointments"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -320,6 +470,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -358,6 +518,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -427,6 +597,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -460,6 +640,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -539,6 +729,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -572,6 +772,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -607,6 +817,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -630,6 +850,18 @@
       "get": {
         "tags": [
           "Appointments"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -659,6 +891,16 @@
               "type": "integer",
               "format": "int32",
               "default": 7
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -703,6 +945,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -736,6 +988,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -779,6 +1041,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -799,6 +1071,18 @@
       "post": {
         "tags": [
           "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -848,6 +1132,18 @@
         "tags": [
           "Auth"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -895,6 +1191,18 @@
       "post": {
         "tags": [
           "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -944,6 +1252,18 @@
         "tags": [
           "Auth"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -974,6 +1294,18 @@
       "post": {
         "tags": [
           "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -1006,6 +1338,18 @@
         "tags": [
           "Auth"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1036,6 +1380,18 @@
       "post": {
         "tags": [
           "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -1068,9 +1424,122 @@
         "tags": [
           "Auth"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/BloodBank/request": {
+      "post": {
+        "tags": [
+          "BloodBank"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.CreateBloodRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.CreateBloodRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.CreateBloodRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/BloodBank/active": {
+      "get": {
+        "tags": [
+          "BloodBank"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]]"
+                }
+              }
+            }
           }
         }
       }
@@ -1174,6 +1643,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1202,6 +1681,18 @@
       "post": {
         "tags": [
           "Consultations"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -1261,6 +1752,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1299,6 +1800,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -1368,6 +1879,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1401,6 +1922,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -1445,6 +1976,18 @@
         "tags": [
           "Consultations"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1463,6 +2006,18 @@
       "get": {
         "tags": [
           "Consultations"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1495,6 +2050,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -1609,6 +2174,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1637,6 +2212,18 @@
       "post": {
         "tags": [
           "Doctors"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -1696,6 +2283,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1734,6 +2331,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -1803,6 +2410,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1836,6 +2453,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -1878,6 +2505,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -1902,6 +2539,18 @@
         "tags": [
           "Doctors"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1924,6 +2573,18 @@
         "tags": [
           "Doctors"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1942,6 +2603,18 @@
       "get": {
         "tags": [
           "Doctors"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1973,6 +2646,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2007,6 +2690,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2016,6 +2709,680 @@
               "application/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donations": {
+      "get": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "SponsorshipId",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "DonorId",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Status",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PaymentMethod",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "FromDate",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "ToDate",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "MinAmount",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "MaxAmount",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDesc",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donations.DonationDto]]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.CreateDonationDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.CreateDonationDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.CreateDonationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donations/{id}": {
+      "get": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donations/{id}/status": {
+      "patch": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.UpdateDonationStatusDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.UpdateDonationStatusDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.UpdateDonationStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donations/donor/{donorId}": {
+      "get": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "donorId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Donations.DonationDto]]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donations/stats": {
+      "get": {
+        "tags": [
+          "Donations"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationStatsDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donors": {
+      "get": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "Search",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MinTotalDonated",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "MaxTotalDonated",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDesc",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donors.DonorDto]]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.CreateDonorDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.CreateDonorDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.CreateDonorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donors.DonorDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donors/{id}": {
+      "get": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donors.DonorDto]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.UpdateDonorDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.UpdateDonorDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.UpdateDonorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donors.DonorDto]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Object]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Donors/top": {
+      "get": {
+        "tags": [
+          "Donors"
+        ],
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Donors.DonorDto]]"
                 }
               }
             }
@@ -2035,6 +3402,16 @@
             "style": "form",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2067,6 +3444,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2087,6 +3474,18 @@
       "post": {
         "tags": [
           "Emergency"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -2135,6 +3534,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2204,6 +3613,16 @@
               "format": "double",
               "default": 10
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2224,6 +3643,18 @@
       "post": {
         "tags": [
           "Emergency"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -2380,6 +3811,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2408,6 +3849,18 @@
       "post": {
         "tags": [
           "Equipment"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -2467,6 +3920,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2505,6 +3968,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2574,6 +4047,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2607,6 +4090,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2678,6 +4171,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "requestBody": {
@@ -2748,6 +4251,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2780,6 +4293,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -2824,6 +4347,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2858,6 +4391,18 @@
         "tags": [
           "Equipment"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -2880,6 +4425,18 @@
         "tags": [
           "Equipment"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -2901,6 +4458,18 @@
       "get": {
         "tags": [
           "Equipment"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -2931,6 +4500,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -2952,6 +4531,18 @@
       "patch": {
         "tags": [
           "Equipment"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -3003,6 +4594,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3032,10 +4633,140 @@
         }
       }
     },
+    "/api/Files/upload": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "File"
+                ],
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "FolderName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "FolderName": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "HealthAidAPI"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/test/db": {
+      "get": {
+        "tags": [
+          "HealthAidAPI"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/": {
       "get": {
         "tags": [
           "HealthAidAPI"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3142,6 +4873,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3170,6 +4911,18 @@
       "post": {
         "tags": [
           "HealthGuides"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -3229,6 +4982,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3267,6 +5030,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3336,6 +5109,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3369,6 +5152,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3404,6 +5197,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3428,6 +5231,18 @@
         "tags": [
           "HealthGuides"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -3450,6 +5265,18 @@
         "tags": [
           "HealthGuides"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -3471,6 +5298,18 @@
       "get": {
         "tags": [
           "HealthGuides"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3500,6 +5339,16 @@
               "type": "integer",
               "format": "int32",
               "default": 5
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3545,6 +5394,16 @@
               "format": "int32",
               "default": 3
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3568,6 +5427,18 @@
       "post": {
         "tags": [
           "Location"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -3616,6 +5487,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3666,6 +5547,16 @@
               "format": "double",
               "default": 5
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3687,6 +5578,18 @@
         "tags": [
           "Location"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -3703,6 +5606,18 @@
       "post": {
         "tags": [
           "Location"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -3767,6 +5682,16 @@
               "type": "number",
               "format": "double"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3785,6 +5710,18 @@
       "post": {
         "tags": [
           "MedicalFacility"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -3834,6 +5771,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -3862,6 +5809,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3912,6 +5869,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -3989,6 +5956,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4017,6 +5994,16 @@
             "style": "form",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4166,6 +6153,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4194,6 +6191,18 @@
       "post": {
         "tags": [
           "MedicineRequests"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -4253,6 +6262,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4291,6 +6310,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4360,6 +6389,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4393,6 +6432,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4454,6 +6503,18 @@
         "tags": [
           "MedicineRequests"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -4472,6 +6533,18 @@
       "get": {
         "tags": [
           "MedicineRequests"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -4494,6 +6567,18 @@
       "get": {
         "tags": [
           "MedicineRequests"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -4526,6 +6611,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4561,6 +6656,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4594,6 +6699,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4731,6 +6846,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4759,6 +6884,18 @@
       "post": {
         "tags": [
           "MentalSupportSessions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -4818,6 +6955,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4856,6 +7003,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -4925,6 +7082,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -4958,6 +7125,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5012,6 +7189,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "requestBody": {
@@ -5055,6 +7242,18 @@
         "tags": [
           "MentalSupportSessions"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -5083,6 +7282,16 @@
               "type": "integer",
               "format": "int32",
               "default": 7
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5118,6 +7327,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5151,6 +7370,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5195,6 +7424,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5225,6 +7464,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5281,6 +7530,18 @@
       "get": {
         "tags": [
           "MentalSupportSessions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -5390,6 +7651,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5418,6 +7689,18 @@
       "post": {
         "tags": [
           "Messages"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -5465,6 +7748,18 @@
         "tags": [
           "Messages"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -5486,6 +7781,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5525,6 +7830,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5594,6 +7909,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5617,6 +7942,18 @@
       "post": {
         "tags": [
           "Messages"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -5684,6 +8021,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5717,6 +8064,18 @@
       "patch": {
         "tags": [
           "Messages"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -5768,6 +8127,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5809,6 +8178,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -5937,6 +8316,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -5965,6 +8354,18 @@
       "post": {
         "tags": [
           "NgoMissions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -6024,6 +8425,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6062,6 +8473,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -6131,6 +8552,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6165,6 +8596,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6197,6 +8638,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -6252,6 +8703,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6296,6 +8757,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6317,6 +8788,18 @@
       "get": {
         "tags": [
           "NgoMissions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -6346,6 +8829,16 @@
               "type": "integer",
               "format": "int32",
               "default": 30
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -6429,6 +8922,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6457,6 +8960,18 @@
       "post": {
         "tags": [
           "NGOs"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -6516,6 +9031,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6554,6 +9079,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -6623,6 +9158,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6656,6 +9201,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6688,6 +9243,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -6732,6 +9297,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6775,6 +9350,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -6809,6 +9394,18 @@
         "tags": [
           "NGOs"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -6830,6 +9427,18 @@
       "get": {
         "tags": [
           "NGOs"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -6859,6 +9468,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7007,6 +9626,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7035,6 +9664,18 @@
       "post": {
         "tags": [
           "Notifications"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -7094,6 +9735,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7132,6 +9783,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7201,6 +9862,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7234,6 +9905,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7277,6 +9958,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7311,6 +10002,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7344,6 +10045,18 @@
       "post": {
         "tags": [
           "Notifications"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -7403,6 +10116,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7426,6 +10149,18 @@
       "patch": {
         "tags": [
           "Notifications"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -7468,6 +10203,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7490,6 +10235,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7531,6 +10286,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7657,6 +10422,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7685,6 +10460,18 @@
       "post": {
         "tags": [
           "Patients"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -7744,6 +10531,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7782,6 +10579,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7851,6 +10658,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7884,6 +10701,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -7926,6 +10753,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -7950,6 +10787,18 @@
         "tags": [
           "Patients"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -7971,6 +10820,18 @@
       "get": {
         "tags": [
           "Patients"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -8000,6 +10861,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -8034,6 +10905,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8057,6 +10938,18 @@
       "get": {
         "tags": [
           "Patients"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -8090,6 +10983,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8111,6 +11014,18 @@
         "tags": [
           "Patients"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -8119,6 +11034,207 @@
                 "schema": {
                   "type": "integer",
                   "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Payment/checkout": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Payments.PaymentRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Payments.PaymentRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Payments.PaymentRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Payments.PaymentResponseDto]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Payments.PaymentResponseDto]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Payments.PaymentResponseDto]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Payment/success": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Pharmacy/search": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.MedicineSearchDto]]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.MedicineSearchDto]]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.MedicineSearchDto]]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pharmacy/update-stock": {
+      "post": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.UpdateStockDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.UpdateStockDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.UpdateStockDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[System.String]"
                 }
               }
             }
@@ -8234,6 +11350,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8262,6 +11388,18 @@
       "post": {
         "tags": [
           "Prescriptions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -8321,6 +11459,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8359,6 +11507,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -8428,6 +11586,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8462,6 +11630,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8485,6 +11663,18 @@
       "post": {
         "tags": [
           "Prescriptions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -8547,6 +11737,16 @@
               "format": "int32",
               "default": 1
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8581,6 +11781,18 @@
         "tags": [
           "Prescriptions"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -8609,6 +11821,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -8644,6 +11866,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8678,6 +11910,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8708,6 +11950,16 @@
               "type": "integer",
               "format": "int32",
               "default": 7
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -8742,6 +11994,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -8866,6 +12128,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -8894,6 +12166,18 @@
       "post": {
         "tags": [
           "PublicAlerts"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -8941,6 +12225,18 @@
         "tags": [
           "PublicAlerts"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -8962,6 +12258,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9001,6 +12307,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9070,6 +12386,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9103,6 +12429,16 @@
               "type": "integer",
               "format": "int32",
               "default": 5
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9138,6 +12474,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9172,6 +12518,18 @@
         "tags": [
           "PublicAlerts"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -9193,6 +12551,18 @@
       "get": {
         "tags": [
           "PublicAlerts"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -9222,6 +12592,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9362,6 +12742,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9390,6 +12780,18 @@
       "post": {
         "tags": [
           "Ratings"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -9449,6 +12851,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9487,6 +12899,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9556,6 +12978,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9598,6 +13030,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9652,6 +13094,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9682,6 +13134,18 @@
       "get": {
         "tags": [
           "Ratings"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -9731,6 +13195,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9761,6 +13235,16 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -9796,6 +13280,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9830,6 +13324,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9861,6 +13365,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9881,6 +13395,18 @@
       "post": {
         "tags": [
           "Recommendation"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -9930,6 +13456,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -9958,6 +13494,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10118,6 +13664,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10146,6 +13702,18 @@
       "post": {
         "tags": [
           "Services"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -10205,6 +13773,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10243,6 +13821,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10312,6 +13900,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10345,6 +13943,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10416,6 +14024,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10446,6 +14064,18 @@
       "get": {
         "tags": [
           "Services"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -10485,6 +14115,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10508,6 +14148,18 @@
       "get": {
         "tags": [
           "Services"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -10539,6 +14191,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10573,6 +14235,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10717,6 +14389,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10745,6 +14427,18 @@
       "post": {
         "tags": [
           "Sponsorships"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -10804,6 +14498,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10842,6 +14546,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -10911,6 +14625,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -10944,6 +14668,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -11015,6 +14749,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "requestBody": {
@@ -11058,6 +14802,18 @@
         "tags": [
           "Sponsorships"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -11076,6 +14832,18 @@
       "get": {
         "tags": [
           "Sponsorships"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -11108,6 +14876,16 @@
               "type": "integer",
               "format": "int32",
               "default": 5
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -11143,6 +14921,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11175,6 +14963,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11198,6 +14996,18 @@
       "post": {
         "tags": [
           "Sync"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -11247,6 +15057,30 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/welcome": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -11378,6 +15212,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11406,6 +15250,18 @@
       "post": {
         "tags": [
           "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -11465,6 +15321,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11503,6 +15369,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -11572,6 +15448,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11605,6 +15491,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -11659,6 +15555,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11692,6 +15598,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -11735,6 +15651,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11759,6 +15685,18 @@
         "tags": [
           "Transactions"
         ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -11777,6 +15715,18 @@
       "get": {
         "tags": [
           "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -11815,6 +15765,16 @@
               "type": "string",
               "format": "date-time"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11836,6 +15796,18 @@
       "get": {
         "tags": [
           "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -11951,6 +15923,16 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -11999,6 +15981,18 @@
       "post": {
         "tags": [
           "Users"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -12058,6 +16052,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12089,6 +16093,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -12158,6 +16172,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12191,6 +16215,16 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -12255,6 +16289,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12289,6 +16333,16 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12321,6 +16375,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
             }
           }
         ],
@@ -12355,6 +16419,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12375,6 +16449,18 @@
       "get": {
         "tags": [
           "Users"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -12403,6 +16489,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
           }
         ],
         "responses": {
@@ -12421,11 +16517,71 @@
           }
         }
       }
+    },
+    "/api/Vitals/sync": {
+      "post": {
+        "tags": [
+          "Vitals"
+        ],
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language preference (ar-PS for Arabic, en-US for English)",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.LogVitalDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.LogVitalDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.LogVitalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Extras.PatientVital]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Extras.PatientVital]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Extras.PatientVital]"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "HealthAidAPI.DTOs.Analytics.ConsultationAnalyticsDto": {
+      "ConsultationAnalyticsDto": {
         "type": "object",
         "properties": {
           "TotalConsultations": {
@@ -12470,7 +16626,19 @@
             "type": "integer",
             "format": "int32"
           },
+          "TotalDonors": {
+            "type": "integer",
+            "format": "int32"
+          },
           "TotalConsultations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ActiveConsultations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CompletedConsultations": {
             "type": "integer",
             "format": "int32"
           },
@@ -12478,11 +16646,23 @@
             "type": "integer",
             "format": "int32"
           },
+          "TotalDonationsAmount": {
+            "type": "number",
+            "format": "double"
+          },
           "TotalEmergencyCases": {
             "type": "integer",
             "format": "int32"
           },
+          "ActiveEmergencyCases": {
+            "type": "integer",
+            "format": "int32"
+          },
           "TotalMedicalFacilities": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ActiveFacilities": {
             "type": "integer",
             "format": "int32"
           },
@@ -12492,6 +16672,18 @@
               "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.DonationDto"
             },
             "nullable": true
+          },
+          "NewUsersToday": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ConsultationsToday": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "LastUpdated": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -12499,6 +16691,7 @@
       "HealthAidAPI.DTOs.Analytics.LogUserActivityDto": {
         "required": [
           "ActivityType",
+          "Description",
           "UserId"
         ],
         "type": "object",
@@ -12508,19 +16701,28 @@
             "format": "int32"
           },
           "ActivityType": {
-            "maxLength": 100,
+            "maxLength": 50,
             "minLength": 0,
             "type": "string"
           },
           "Description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
           },
           "IpAddress": {
+            "maxLength": 45,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "UserAgent": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "Metadata": {
             "type": "string",
             "nullable": true
           }
@@ -12554,9 +16756,17 @@
             "type": "string",
             "nullable": true
           },
+          "UserAgent": {
+            "type": "string",
+            "nullable": true
+          },
           "CreatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "Metadata": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13316,6 +17526,62 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.DTOs.Donations.CreateDonationDto": {
+        "required": [
+          "Amount",
+          "DonationType",
+          "PaymentMethod",
+          "SponsorshipId"
+        ],
+        "type": "object",
+        "properties": {
+          "Amount": {
+            "minimum": 0.01,
+            "type": "number",
+            "format": "double"
+          },
+          "PaymentMethod": {
+            "maxLength": 50,
+            "minLength": 0,
+            "pattern": "^(CreditCard|BankTransfer|Cash|MobilePayment|Other)$",
+            "type": "string"
+          },
+          "DonationType": {
+            "maxLength": 50,
+            "minLength": 0,
+            "pattern": "^(OneTime|Monthly|Quarterly|Annual)$",
+            "type": "string"
+          },
+          "SponsorshipId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DonorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsAnonymous": {
+            "type": "boolean"
+          },
+          "ReceiveUpdates": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "Message": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.DTOs.Donations.DonationDto": {
         "type": "object",
         "properties": {
@@ -13328,6 +17594,174 @@
             "format": "double"
           },
           "DonorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "DonorEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "DonorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SponsorshipId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SponsorshipTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "DonationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "PaymentMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "Status": {
+            "type": "string",
+            "nullable": true
+          },
+          "DonationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsAnonymous": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "TransactionId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Donations.DonationStatsDto": {
+        "type": "object",
+        "properties": {
+          "TotalDonations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalAmountRaised": {
+            "type": "number",
+            "format": "double"
+          },
+          "CompletedDonationsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PendingDonationsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DonationsByMethod": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "AverageDonationAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Donations.UpdateDonationStatusDto": {
+        "required": [
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "Status": {
+            "minLength": 1,
+            "pattern": "^(Pending|Completed|Failed|Refunded)$",
+            "type": "string"
+          },
+          "TransactionId": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Donors.CreateDonorDto": {
+        "required": [
+          "Organization",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "Organization": {
+            "maxLength": 100,
+            "minLength": 2,
+            "type": "string"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Donors.DonorDto": {
+        "type": "object",
+        "properties": {
+          "DonorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Organization": {
+            "type": "string",
+            "nullable": true
+          },
+          "TotalDonated": {
+            "type": "number",
+            "format": "double"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "DonorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "DonationCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "JoinedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Donors.UpdateDonorDto": {
+        "type": "object",
+        "properties": {
+          "Organization": {
+            "maxLength": 100,
+            "minLength": 2,
             "type": "string",
             "nullable": true
           }
@@ -13898,6 +18332,141 @@
           "DosageAndAdministration": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Extras.BloodRequestDto": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "BloodType": {
+            "type": "string",
+            "nullable": true
+          },
+          "HospitalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "UrgencyLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "ContactNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "CreatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Extras.CreateBloodRequestDto": {
+        "required": [
+          "BloodType",
+          "ContactNumber",
+          "HospitalName"
+        ],
+        "type": "object",
+        "properties": {
+          "BloodType": {
+            "minLength": 1,
+            "pattern": "^(A|B|AB|O)[+-]$",
+            "type": "string"
+          },
+          "HospitalName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "ContactNumber": {
+            "minLength": 1,
+            "type": "string",
+            "format": "tel"
+          },
+          "UrgencyLevel": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Extras.LogVitalDto": {
+        "type": "object",
+        "properties": {
+          "HeartRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "OxygenLevel": {
+            "type": "number",
+            "format": "double"
+          },
+          "BodyTemperature": {
+            "type": "number",
+            "format": "double"
+          },
+          "DeviceId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Extras.MedicineSearchDto": {
+        "type": "object",
+        "properties": {
+          "MedicineName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PharmacyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PharmacyAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "Stock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Price": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Extras.UpdateStockDto": {
+        "required": [
+          "FacilityId",
+          "MedicineName",
+          "NewQuantity",
+          "Price"
+        ],
+        "type": "object",
+        "properties": {
+          "FacilityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MedicineName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "NewQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Price": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -16025,6 +20594,38 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.DTOs.Payments.PaymentRequestDto": {
+        "type": "object",
+        "properties": {
+          "DonationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "Currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.DTOs.Payments.PaymentResponseDto": {
+        "type": "object",
+        "properties": {
+          "PaymentUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "SessionId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.DTOs.Prescriptions.CreatePrescriptionDto": {
         "required": [
           "ConsultationId",
@@ -17976,7 +22577,7 @@
         },
         "additionalProperties": false
       },
-      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Analytics.ConsultationAnalyticsDto]": {
+      "HealthAidAPI.Helpers.ApiResponse`1[ConsultationAnalyticsDto]": {
         "type": "object",
         "properties": {
           "Success": {
@@ -17987,7 +22588,7 @@
             "nullable": true
           },
           "Data": {
-            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Analytics.ConsultationAnalyticsDto"
+            "$ref": "#/components/schemas/ConsultationAnalyticsDto"
           }
         },
         "additionalProperties": false
@@ -18024,6 +22625,54 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationDto]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.DonationDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donations.DonationStatsDto]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.DonationStatsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Donors.DonorDto]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.DonorDto"
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Emergency.EmergencyCaseDto]": {
         "type": "object",
         "properties": {
@@ -18052,6 +22701,22 @@
           },
           "Data": {
             "$ref": "#/components/schemas/HealthAidAPI.DTOs.External.DrugInfoDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.BloodRequestDto"
           }
         },
         "additionalProperties": false
@@ -18136,6 +22801,22 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Payments.PaymentResponseDto]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.DTOs.Payments.PaymentResponseDto"
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.DTOs.Recommendations.PatientHealthProfileDto]": {
         "type": "object",
         "properties": {
@@ -18168,6 +22849,38 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donations.DonationDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donations.DonationDto]"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donors.DonorDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donors.DonorDto]"
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Emergency.EmergencyResponder]": {
         "type": "object",
         "properties": {
@@ -18180,6 +22893,22 @@
           },
           "Data": {
             "$ref": "#/components/schemas/HealthAidAPI.Models.Emergency.EmergencyResponder"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[HealthAidAPI.Models.Extras.PatientVital]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "$ref": "#/components/schemas/HealthAidAPI.Models.Extras.PatientVital"
           }
         },
         "additionalProperties": false
@@ -18204,6 +22933,46 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Donations.DonationDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.DonationDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Donors.DonorDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.DonorDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Emergency.EmergencyCaseDto]]": {
         "type": "object",
         "properties": {
@@ -18218,6 +22987,46 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HealthAidAPI.DTOs.Emergency.EmergencyCaseDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.BloodRequestDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.BloodRequestDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.Collections.Generic.List`1[HealthAidAPI.DTOs.Extras.MedicineSearchDto]]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Extras.MedicineSearchDto"
             },
             "nullable": true
           }
@@ -18324,6 +23133,39 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.Object]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.ApiResponse`1[System.String]": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean"
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          },
+          "Data": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Appointments.AppointmentDto]": {
         "type": "object",
         "properties": {
@@ -18407,6 +23249,82 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HealthAidAPI.DTOs.Doctors.DoctorDto"
+            },
+            "nullable": true
+          },
+          "TotalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "HasPrevious": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "HasNext": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donations.DonationDto]": {
+        "type": "object",
+        "properties": {
+          "Items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donations.DonationDto"
+            },
+            "nullable": true
+          },
+          "TotalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "HasPrevious": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "HasNext": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HealthAidAPI.Helpers.PagedResult`1[HealthAidAPI.DTOs.Donors.DonorDto]": {
+        "type": "object",
+        "properties": {
+          "Items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HealthAidAPI.DTOs.Donors.DonorDto"
             },
             "nullable": true
           },
@@ -19646,6 +24564,43 @@
         },
         "additionalProperties": false
       },
+      "HealthAidAPI.Models.Extras.PatientVital": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PatientId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "HeartRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "OxygenLevel": {
+            "type": "number",
+            "format": "double"
+          },
+          "BodyTemperature": {
+            "type": "number",
+            "format": "double"
+          },
+          "DeviceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "RecordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsCritical": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthAidAPI.Models.HealthGuide": {
         "required": [
           "Category",
@@ -20841,7 +25796,7 @@
     "securitySchemes": {
       "Bearer": {
         "type": "http",
-        "description": "Enter JWT token",
+        "description": "Enter JWT token (format: Bearer {token})",
         "scheme": "Bearer",
         "bearerFormat": "JWT"
       }

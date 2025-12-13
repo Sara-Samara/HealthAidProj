@@ -3,38 +3,43 @@ using HealthAidAPI.Data;
 using HealthAidAPI.Models.MedicalFacilities;
 using HealthAidAPI.DTOs.MedicalFacilities;
 using HealthAidAPI.Services.Interfaces;
-
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HealthAidAPI.Services.Implementations
 {
     public class MedicalFacilityService : IMedicalFacilityService
     {
         private readonly ApplicationDbContext _context;
-
-        public MedicalFacilityService(ApplicationDbContext context)
+        private readonly IMemoryCache _cache;
+        public MedicalFacilityService(ApplicationDbContext context , IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         public async Task<List<MedicalFacilityDto>> GetMedicalFacilitiesAsync(string? type, bool? verified, decimal? minRating)
         {
-            var query = _context.MedicalFacilities.AsQueryable();
+            string cacheKey = $"facilities_{type}_{verified}_{minRating}";
 
-            if (!string.IsNullOrEmpty(type))
-                query = query.Where(f => f.Type == type);
+            if (!_cache.TryGetValue(cacheKey, out List<MedicalFacilityDto>? cachedFacilities))
+            {
+                var query = _context.MedicalFacilities.AsQueryable();
 
-            if (verified.HasValue)
-                query = query.Where(f => f.Verified == verified.Value);
+                if (!string.IsNullOrEmpty(type)) query = query.Where(f => f.Type == type);
+                if (verified.HasValue) query = query.Where(f => f.Verified == verified.Value);
+                if (minRating.HasValue) query = query.Where(f => f.AverageRating >= minRating.Value);
 
-            if (minRating.HasValue)
-                query = query.Where(f => f.AverageRating >= minRating.Value);
+                var facilities = await query.ToListAsync();
 
-            var facilities = await query
-                .OrderByDescending(f => f.AverageRating)
-                .ThenBy(f => f.Name)
-                .ToListAsync();
+                cachedFacilities = facilities.Select(MapToDto).ToList();
 
-            return facilities.Select(MapToDto).ToList();
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+
+                _cache.Set(cacheKey, cachedFacilities, cacheEntryOptions);
+            }
+
+            return cachedFacilities!;
         }
 
         public async Task<MedicalFacilityDto?> GetMedicalFacilityByIdAsync(int id)
